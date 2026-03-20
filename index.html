@@ -13,6 +13,7 @@
     --muted: #909090;
     --border: #e8e8e8;
     --card-bg: #f9f9f9;
+    --code-bg: #1e1e2e;
   }
   [data-theme="dark"] {
     --bg: #0f0f0f;
@@ -31,152 +32,86 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
-
   .side-tag {
-    position: fixed;
-    right: 20px;
-    top: 120px;
-    z-index: 50;
-    cursor: default;
-    user-select: none;
+    position: fixed; right: 20px; top: 120px;
+    z-index: 50; cursor: default; user-select: none;
   }
-
   .side-tag-text {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    color: rgba(0,0,0,0.18);
-    line-height: 1;
-    display: block;
-    white-space: nowrap;
-    transform: scaleY(1);
-    transform-origin: top center;
-    transition:
-      transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-      color 0.4s ease;
+    font-size: 15px; font-weight: 500; letter-spacing: 2px;
+    color: rgba(0,0,0,0.18); line-height: 1; display: block;
+    white-space: nowrap; transform: scaleY(1); transform-origin: top center;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), color 0.4s ease;
   }
-
-  [data-theme="dark"] .side-tag-text {
-    color: rgba(255,255,255,0.14);
-  }
-
-  .side-tag:hover .side-tag-text {
-    transform: scaleY(3);
-    color: rgba(0,0,0,0.28);
-  }
-
-  [data-theme="dark"] .side-tag:hover .side-tag-text {
-    color: rgba(255,255,255,0.24);
-  }
-
+  [data-theme="dark"] .side-tag-text { color: rgba(255,255,255,0.14); }
+  .side-tag:hover .side-tag-text { transform: scaleY(3); color: rgba(0,0,0,0.28); }
+  [data-theme="dark"] .side-tag:hover .side-tag-text { color: rgba(255,255,255,0.24); }
   nav {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 24px 48px;
-    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 24px 48px; border-bottom: 1px solid var(--border);
   }
   #theme-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    padding: 6px;
-    border-radius: 6px;
+    background: none; border: none; cursor: pointer; color: var(--muted);
+    display: flex; align-items: center; padding: 6px; border-radius: 6px;
     transition: color 0.2s, background 0.2s;
   }
-  #theme-toggle:hover {
-    color: var(--text);
-    background: var(--border);
-  }
-
-  main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 72px 48px;
-  }
+  #theme-toggle:hover { color: var(--text); background: var(--border); }
+  main { max-width: 860px; margin: 0 auto; padding: 72px 48px; }
   .intro { margin-bottom: 72px; }
-  .intro h1 {
-    font-size: 27px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    letter-spacing: -0.3px;
-    line-height: 1.3;
-  }
+  .intro h1 { font-size: 27px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.3px; line-height: 1.3; }
   .intro p { font-size: 15.5px; color: var(--muted); line-height: 1.75; }
   .intro p span { color: var(--text); font-weight: 500; }
   .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;
   }
-  .works-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-    margin-bottom: 64px;
-  }
-  .work-card {
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    overflow: hidden;
-    border-radius: 8px;
-  }
-  .work-img-wrap {
-    position: relative;
-    aspect-ratio: 1;
-    overflow: hidden;
-  }
-  .work-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease;
-  }
+  .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 16px; margin-bottom: 64px; }
+  .work-card { border: 1px solid var(--border); background: var(--card-bg); overflow: hidden; border-radius: 8px; }
+  .work-img-wrap { position: relative; aspect-ratio: 1; overflow: hidden; }
+  .work-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
   .work-card:hover .work-img-wrap img { transform: scale(1.04); }
   .work-hover-info {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(4px);
-    color: #fff;
-    padding: 14px 16px;
-    transform: translateY(100%);
-    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.72); backdrop-filter: blur(4px);
+    color: #fff; padding: 14px 16px; transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
   }
   .work-card:hover .work-hover-info { transform: translateY(0); }
   .studio-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-  .studio-role {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    opacity: 0.55;
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
-  }
+  .studio-role { font-family: 'JetBrains Mono', monospace; font-size: 10px; opacity: 0.55; margin-bottom: 10px; letter-spacing: 0.5px; }
   .work-stats { display: flex; gap: 18px; }
   .stat { display: flex; flex-direction: column; gap: 2px; }
   .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; }
   .stat-key { font-size: 10px; opacity: 0.55; letter-spacing: 1px; text-transform: uppercase; }
-  .skills-block {
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 24px 28px;
-  }
+  .skills-block { border: 1px solid var(--border); background: var(--card-bg); border-radius: 8px; padding: 24px 28px; margin-bottom: 64px; }
   .skills-block p { font-size: 15.5px; line-height: 1.8; color: var(--muted); }
   .skills-block p strong { color: var(--text); font-weight: 600; }
-
-  @media (max-width: 600px) {
-    nav { padding: 18px 20px; }
-    main { padding: 48px 20px; }
-  }
+  .scripts-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+  .script-card { border: 1px solid var(--border); background: var(--card-bg); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+  .script-card.open { border-color: var(--muted); }
+  .script-header { display: flex; align-items: center; gap: 14px; padding: 14px 18px; cursor: pointer; user-select: none; }
+  .script-icon { width: 38px; height: 38px; flex-shrink: 0; border-radius: 6px; overflow: hidden; background: #1a0a2e; display: flex; align-items: center; justify-content: center; }
+  .script-icon img { width: 100%; height: 100%; object-fit: cover; }
+  .script-meta { flex: 1; min-width: 0; }
+  .script-title { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .script-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .script-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase; flex-shrink: 0; }
+  .badge-local { background: rgba(59,130,246,0.12); color: #3b82f6; }
+  .badge-server { background: rgba(239,68,68,0.12); color: #ef4444; }
+  .script-chevron { color: var(--muted); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0; }
+  .script-card.open .script-chevron { transform: rotate(180deg); }
+  .script-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .script-card.open .script-body { max-height: 99999px; }
+  .script-code-wrap { border-top: 1px solid var(--border); background: var(--code-bg); padding: 20px 24px; overflow-x: auto; }
+  pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.75; white-space: pre; color: #cdd6f4; }
+  .kw  { color: #cba6f7; }
+  .fn  { color: #89b4fa; }
+  .str { color: #a6e3a1; }
+  .num { color: #fab387; }
+  .cmt { color: #6c7086; font-style: italic; }
+  .cls { color: #f38ba8; }
+  .footer-note { font-size: 14px; font-style: italic; color: var(--muted); margin-top: 40px; line-height: 1.7; }
+  @media (max-width: 600px) { nav { padding: 18px 20px; } main { padding: 48px 20px; } }
 </style>
 </head>
 <body>
@@ -219,20 +154,693 @@
   <div class="skills-block">
     <p>I can script complicated scripts, from simple <strong>localscripts</strong>, to setting up complex custom <strong>module loaders</strong>, <strong>ANTI-CHEATS</strong>, and more ...</p>
   </div>
+
+  <p class="section-label">Scripts</p>
+  <div class="scripts-list">
+
+    <div class="script-card" data-card="0">
+      <div class="script-header">
+        <div class="script-icon">
+          <img src="image-removebg-preview__4_.png" alt="icon" onerror="this.parentElement.style.background='#2a1a4e'">
+        </div>
+        <div class="script-meta">
+          <div class="script-title">Gambling system | Client side</div>
+          <div class="script-subtitle">localscript</div>
+        </div>
+        <span class="script-badge badge-local">Local</span>
+        <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
+      </div>
+      <div class="script-body">
+        <div class="script-code-wrap"><pre id="pre-0"></pre></div>
+      </div>
+    </div>
+
+    <div class="script-card" data-card="1">
+      <div class="script-header">
+        <div class="script-icon">
+          <img src="image-removebg-preview__4_.png" alt="icon" onerror="this.parentElement.style.background='#2a1a4e'">
+        </div>
+        <div class="script-meta">
+          <div class="script-title">Gambling system | Server side</div>
+          <div class="script-subtitle">serverscript</div>
+        </div>
+        <span class="script-badge badge-server">Server</span>
+        <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
+      </div>
+      <div class="script-body">
+        <div class="script-code-wrap"><pre id="pre-1"></pre></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="footer-note">*still looking for experience with more studios, or commisions. I'm a nice guy commision me ty :3*</p>
 </main>
 
 <script>
-  lucide.createIcons();
-  const toggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
-  const sunIcon = document.getElementById('icon-sun');
-  const moonIcon = document.getElementById('icon-moon');
-  toggle.addEventListener('click', () => {
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    sunIcon.style.display = isDark ? 'block' : 'none';
-    moonIcon.style.display = isDark ? 'none' : 'block';
+lucide.createIcons();
+
+const toggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+const sunIcon = document.getElementById('icon-sun');
+const moonIcon = document.getElementById('icon-moon');
+toggle.addEventListener('click', () => {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  sunIcon.style.display = isDark ? 'block' : 'none';
+  moonIcon.style.display = isDark ? 'none' : 'block';
+});
+
+const cards = document.querySelectorAll('.script-card');
+cards.forEach(card => {
+  card.querySelector('.script-header').addEventListener('click', () => {
+    const isOpen = card.classList.contains('open');
+    cards.forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
   });
+});
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function highlight(raw) {
+  const lines = raw.split('\n');
+  return lines.map(line => {
+    // check if whole line is a comment
+    const trimmed = line.trimStart();
+    if (trimmed.startsWith('--')) {
+      return '<span class="cmt">' + esc(line) + '</span>';
+    }
+
+    let result = '';
+    let i = 0;
+    while (i < line.length) {
+      // inline comment
+      if (line[i] === '-' && line[i+1] === '-') {
+        result += '<span class="cmt">' + esc(line.slice(i)) + '</span>';
+        break;
+      }
+      // string
+      if (line[i] === '"' || line[i] === "'") {
+        const q = line[i];
+        let j = i + 1;
+        while (j < line.length && line[j] !== q) {
+          if (line[j] === '\\') j++;
+          j++;
+        }
+        j++;
+        result += '<span class="str">' + esc(line.slice(i, j)) + '</span>';
+        i = j;
+        continue;
+      }
+      // number
+      if (/[0-9]/.test(line[i]) && (i === 0 || !/\w/.test(line[i-1]))) {
+        let j = i;
+        while (j < line.length && /[0-9\.]/.test(line[j])) j++;
+        result += '<span class="num">' + esc(line.slice(i, j)) + '</span>';
+        i = j;
+        continue;
+      }
+      // word
+      if (/[a-zA-Z_]/.test(line[i])) {
+        let j = i;
+        while (j < line.length && /\w/.test(line[j])) j++;
+        const word = line.slice(i, j);
+        const keywords = ['local','function','end','if','then','else','elseif','return','for','do','while','repeat','until','not','and','or','in','true','false','nil','break','continue'];
+        const builtins = ['game','workspace','math','table','string','task','print','tostring','tonumber','typeof','ipairs','pairs','pcall','require','Instance','Vector3','Color3','CFrame','UDim2','UDim','Vector2','Enum','Players','ReplicatedStorage','TweenService','RunService','UserInputService'];
+        if (keywords.includes(word)) {
+          result += '<span class="kw">' + esc(word) + '</span>';
+        } else if (builtins.includes(word)) {
+          result += '<span class="fn">' + esc(word) + '</span>';
+        } else {
+          result += esc(word);
+        }
+        i = j;
+        continue;
+      }
+      result += esc(line[i]);
+      i++;
+    }
+    return result;
+  }).join('\n');
+}
+
+const codes = [
+  document.getElementById('raw-0').textContent,
+  document.getElementById('raw-1').textContent
+];
+
+codes.forEach((code, idx) => {
+  document.getElementById('pre-' + idx).innerHTML = highlight(code.trim());
+});
 </script>
+
+<script type="text/plain" id="raw-0">
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local camera = workspace.CurrentCamera
+
+if not game:IsLoaded() then
+	game.Loaded:Wait()
+end
+
+local screenGui = playerGui:WaitForChild("ScreenGui")
+local openFrame = screenGui:WaitForChild("open")
+local sideFrame = screenGui:WaitForChild("side")
+local topFrame = screenGui:WaitForChild("top")
+
+local shakeme = openFrame:WaitForChild("shakemee")
+local lineFrame = openFrame:WaitForChild("line")
+local scrollingFrame = openFrame:WaitForChild("ScrollingFrame")
+local openCaseButton = topFrame:WaitForChild("opencase")
+
+local ViewportConfigs = require(ReplicatedStorage:WaitForChild("ciganyok"):WaitForChild("ja"):WaitForChild("offsets"))
+local ItemChances = require(ReplicatedStorage:WaitForChild("ModuleScript"))
+local rollRemote = ReplicatedStorage:WaitForChild("RollCase")
+local indexRemote = ReplicatedStorage:WaitForChild("UpdateIndex")
+local ciganyok = ReplicatedStorage:WaitForChild("ciganyok")
+
+local itemStorage = ReplicatedStorage
+local itemFrames = {
+	itemStorage:WaitForChild("blu"),
+	itemStorage:WaitForChild("gold"),
+	itemStorage:WaitForChild("purpul"),
+	itemStorage:WaitForChild("red"),
+}
+
+local STRIP_COUNT = 120
+local FRAME_SIZE = UDim2.new(0, 500, 0, 500)
+local FRAME_PADDING = 12
+local FRAME_STEP = 512
+
+local isSpinning = false
+
+local POOL_SIZE = 16
+local tickPool = {}
+local tickPoolIndex = 1
+
+for i = 1, POOL_SIZE do
+	local s = Instance.new("Sound")
+	s.SoundId = "rbxassetid://108925505726445"
+	s.Volume = 0.6
+	s.Parent = playerGui
+	tickPool[i] = s
+end
+
+local function playTick()
+	local s = tickPool[tickPoolIndex]
+	tickPoolIndex = (tickPoolIndex % POOL_SIZE) + 1
+	task.spawn(function()
+		s:Stop()
+		s.TimePosition = 0
+		s:Play()
+	end)
+end
+
+local function playOpenSound()
+	local sound = Instance.new("Sound")
+	sound.SoundId = "rbxassetid://139659161934788"
+	sound.Volume = 1
+	sound.Parent = playerGui
+	sound:Play()
+	game:GetService("Debris"):AddItem(sound, 10)
+end
+
+local function buildWeightedPool(items, count)
+	local totalWeight = 0
+	for _, item in ipairs(items) do
+		totalWeight += item.weight
+	end
+	local pool = {}
+	for _, item in ipairs(items) do
+		local slots = math.floor((item.weight / totalWeight) * count)
+		for _ = 1, slots do
+			table.insert(pool, item)
+		end
+	end
+	while #pool < count do
+		local item = items[math.random(1, #items)]
+		table.insert(pool, item)
+	end
+	for i = #pool, 2, -1 do
+		local j = math.random(1, i)
+		pool[i], pool[j] = pool[j], pool[i]
+	end
+	return pool
+end
+
+local function getFrameByName(name)
+	for _, frame in ipairs(itemFrames) do
+		if frame.Name == name then
+			return frame
+		end
+	end
+	return itemFrames[1]
+end
+
+local function attachViewport(parentFrame, modelName)
+	local config = ViewportConfigs[modelName]
+	local modelSource = ciganyok:FindFirstChild(modelName)
+	if not modelSource or not config then return end
+
+	local vp = Instance.new("ViewportFrame")
+	vp.Size = UDim2.new(1, 0, 1, 0)
+	vp.Position = UDim2.new(0, 0, 0, 0)
+	vp.BackgroundTransparency = 1
+	vp.ImageTransparency = 0
+	vp.LightColor = Color3.fromRGB(255, 255, 255)
+	vp.Ambient = Color3.fromRGB(210, 210, 210)
+	vp.LightDirection = Vector3.new(-1, -1, -1)
+	vp.Parent = parentFrame
+
+	local modelClone = modelSource:Clone()
+	modelClone.Parent = vp
+
+	local vpCamera = Instance.new("Camera")
+	vpCamera.FieldOfView = 50
+	vpCamera.Parent = vp
+	vp.CurrentCamera = vpCamera
+
+	local ori = config.cameraOri
+	vpCamera.CFrame = CFrame.new(config.cameraPos) * CFrame.fromEulerAnglesYXZ(math.rad(ori.X), math.rad(ori.Y), math.rad(ori.Z))
+end
+
+local function clearScrollingFrame()
+	for _, child in ipairs(scrollingFrame:GetChildren()) do
+		if child:IsA("Frame") or child:IsA("ImageLabel") or child:IsA("ImageButton") then
+			child:Destroy()
+		end
+	end
+end
+
+local function populateStrip(pool)
+	clearScrollingFrame()
+	for i, item in ipairs(pool) do
+		local sourceFrame = getFrameByName(item.name)
+		local clone = sourceFrame:Clone()
+		clone.Size = FRAME_SIZE
+		clone.Position = UDim2.new(0, (i - 1) * FRAME_STEP + FRAME_PADDING, 0.5, 0)
+		clone.AnchorPoint = Vector2.new(0, 0.5)
+		clone.Parent = scrollingFrame
+
+		local chosenModel = item.models[math.random(1, #item.models)]
+		attachViewport(clone, chosenModel)
+	end
+	scrollingFrame.CanvasSize = UDim2.new(0, STRIP_COUNT * FRAME_STEP + FRAME_PADDING * 2, 0, 0)
+end
+
+local function suspenseShake(frame, duration)
+	local originalPos = frame.Position
+	local originalRot = frame.Rotation
+	local elapsed = 0
+
+	local shakeConn
+	shakeConn = RunService.Heartbeat:Connect(function(dt)
+		elapsed += dt
+		local progress = elapsed / duration
+		local intensity = 2 + progress * 10
+		local rotIntensity = 1.5 + progress * 6
+
+		frame.Position = UDim2.new(
+			originalPos.X.Scale,
+			originalPos.X.Offset + (math.random() * 2 - 1) * intensity,
+			originalPos.Y.Scale,
+			originalPos.Y.Offset + (math.random() * 2 - 1) * intensity
+		)
+		frame.Rotation = (math.random() * 2 - 1) * rotIntensity
+
+		if elapsed >= duration then
+			shakeConn:Disconnect()
+			frame.Position = originalPos
+			frame.Rotation = originalRot
+		end
+	end)
+end
+
+local function doExplodeSmall(frame, originalSize)
+	local explodeOut = TweenService:Create(frame, TweenInfo.new(0.08, Enum.EasingStyle.Linear), {
+		Size = UDim2.new(
+			originalSize.X.Scale * 1.15,
+			originalSize.X.Offset * 1.15,
+			originalSize.Y.Scale * 1.15,
+			originalSize.Y.Offset * 1.15
+		),
+	})
+	explodeOut:Play()
+	explodeOut.Completed:Wait()
+
+	local shrinkAway = TweenService:Create(frame, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		Size = UDim2.new(0, 0, 0, 0),
+	})
+	shrinkAway:Play()
+	shrinkAway.Completed:Wait()
+
+	frame.Size = originalSize
+end
+
+local function getModelPivot(model)
+	if model:IsA("Model") then
+		local ok, cf = pcall(function() return model:GetPivot() end)
+		if ok then return cf end
+	end
+	for _, part in ipairs(model:GetDescendants()) do
+		if part:IsA("BasePart") then
+			return part.CFrame
+		end
+	end
+	return CFrame.new()
+end
+
+local function showItemViewer(modelName, config, itemId, itemPattern)
+	local modelSource = ciganyok:FindFirstChild(modelName)
+	if not modelSource or not config then return end
+
+	local viewerGui = Instance.new("ScreenGui")
+	viewerGui.Name = "ItemViewer"
+	viewerGui.ResetOnSpawn = false
+	viewerGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	viewerGui.Parent = playerGui
+
+	local backdrop = Instance.new("Frame")
+	backdrop.Size = UDim2.new(1, 0, 1, 0)
+	backdrop.Position = UDim2.new(0, 0, 0, 0)
+	backdrop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	backdrop.BackgroundTransparency = 0.45
+	backdrop.BorderSizePixel = 0
+	backdrop.Parent = viewerGui
+
+	local vp = Instance.new("ViewportFrame")
+	vp.Size = UDim2.new(0.72, 0, 0.82, 0)
+	vp.Position = UDim2.new(0.5, 0, 0.48, 0)
+	vp.AnchorPoint = Vector2.new(0.5, 0.5)
+	vp.BackgroundTransparency = 1
+	vp.ImageTransparency = 0
+	vp.LightColor = Color3.fromRGB(255, 255, 255)
+	vp.Ambient = Color3.fromRGB(210, 210, 210)
+	vp.LightDirection = Vector3.new(-1, -1, -1)
+	vp.Parent = viewerGui
+
+	local modelClone = modelSource:Clone()
+	modelClone.Parent = vp
+
+	local pivotCFrame = getModelPivot(modelClone)
+	local pivotPos = pivotCFrame.Position
+
+	local vpCamera = Instance.new("Camera")
+	vpCamera.FieldOfView = 50
+	vpCamera.Parent = vp
+	vp.CurrentCamera = vpCamera
+
+	local ori = config.cameraOri
+	local baseCameraPos = config.cameraPos
+
+	local rotX = 0
+	local rotY = 0
+	local zoomOffset = 0
+	local isDragging = false
+	local lastMousePos = nil
+	local velocityX = 0
+	local velocityY = 0
+
+	local MIN_ZOOM = -6
+	local MAX_ZOOM = 3
+	local ROT_SPEED = 0.12
+	local FRICTION = 0.88
+	local ZOOM_SPEED = 0.8
+
+	local function updateCamera()
+		local orbitRadius = (baseCameraPos - pivotPos).Magnitude
+		orbitRadius = math.clamp(orbitRadius + zoomOffset, 0.5, 9999)
+
+		local orbitCFrame = CFrame.new(pivotPos)
+			* CFrame.fromEulerAnglesYXZ(math.rad(rotX), math.rad(rotY), 0)
+			* CFrame.new(0, 0, orbitRadius)
+
+		vpCamera.CFrame = CFrame.new(orbitCFrame.Position, pivotPos)
+	end
+
+	updateCamera()
+
+	local inertiaConn
+	inertiaConn = RunService.Heartbeat:Connect(function()
+		if not isDragging then
+			velocityX = velocityX * FRICTION
+			velocityY = velocityY * FRICTION
+			if math.abs(velocityX) > 0.001 or math.abs(velocityY) > 0.001 then
+				rotY = rotY + velocityX
+				rotX = rotX + velocityY
+				rotX = math.clamp(rotX, -80, 80)
+				updateCamera()
+			end
+		end
+	end)
+
+	vp.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			isDragging = true
+			velocityX = 0
+			velocityY = 0
+			lastMousePos = input.Position
+		end
+	end)
+
+	vp.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			isDragging = false
+			lastMousePos = nil
+		end
+	end)
+
+	vp.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement and isDragging and lastMousePos then
+			local delta = input.Position - lastMousePos
+			lastMousePos = input.Position
+			velocityX = delta.X * ROT_SPEED
+			velocityY = -(delta.Y * ROT_SPEED)
+			rotY = rotY + velocityX
+			rotX = rotX + velocityY
+			rotX = math.clamp(rotX, -80, 80)
+			updateCamera()
+		elseif input.UserInputType == Enum.UserInputType.MouseWheel then
+			zoomOffset = math.clamp(zoomOffset - input.Position.Z * ZOOM_SPEED, MIN_ZOOM, MAX_ZOOM)
+			updateCamera()
+		end
+	end)
+
+	local closeBtn = Instance.new("TextButton")
+	closeBtn.Size = UDim2.new(0, 160, 0, 46)
+	closeBtn.Position = UDim2.new(0.5, 0, 0.93, 0)
+	closeBtn.AnchorPoint = Vector2.new(0.5, 0)
+	closeBtn.BackgroundColor3 = Color3.fromRGB(190, 35, 35)
+	closeBtn.BorderSizePixel = 0
+	closeBtn.Text = "Close"
+	closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeBtn.TextSize = 20
+	closeBtn.Font = Enum.Font.GothamBold
+	closeBtn.Parent = viewerGui
+
+	local cornerClose = Instance.new("UICorner")
+	cornerClose.CornerRadius = UDim.new(0, 10)
+	cornerClose.Parent = closeBtn
+
+	closeBtn.MouseButton1Click:Connect(function()
+		if inertiaConn then inertiaConn:Disconnect() end
+		camera.CameraType = Enum.CameraType.Custom
+		viewerGui:Destroy()
+	end)
+end
+
+local function openCase()
+	if isSpinning then return end
+	isSpinning = true
+
+	sideFrame.Visible = false
+	topFrame.Visible = false
+	openFrame.Visible = true
+
+	for _, child in ipairs(openFrame:GetChildren()) do
+		if child ~= shakeme then
+			child.Visible = false
+		end
+	end
+
+	shakeme.Visible = true
+	shakeme.Rotation = 0
+	local originalSize = shakeme.Size
+
+	playOpenSound()
+	suspenseShake(shakeme, 2.2)
+	task.wait(2.2)
+
+	doExplodeSmall(shakeme, originalSize)
+
+	shakeme.Visible = false
+	lineFrame.Visible = true
+	scrollingFrame.Visible = true
+
+	local wonItemName, wonModelName, itemId, itemPattern = rollRemote:InvokeServer()
+
+	local pool = buildWeightedPool(ItemChances, STRIP_COUNT)
+	local winnerIndex = math.floor(STRIP_COUNT * 0.75) + math.random(-3, 3)
+	pool[winnerIndex] = {name = wonItemName, models = {wonModelName}}
+
+	populateStrip(pool)
+
+	RunService.PreRender:Wait()
+
+	local frameCenterX = (winnerIndex - 1) * FRAME_STEP + FRAME_PADDING + (FRAME_SIZE.X.Offset / 2)
+	local finalCanvas = frameCenterX - (scrollingFrame.AbsoluteSize.X / 2)
+	finalCanvas = math.max(0, finalCanvas)
+
+	scrollingFrame.CanvasPosition = Vector2.new(0, 0)
+
+	local startPos = 0
+	local endPos = finalCanvas
+	local duration = 8.5
+	local elapsed = 0
+	local lastCanvasPos = 0
+	local timeSinceLastTick = 0
+
+	local function easeOutExpo(t)
+		if t >= 1 then return 1 end
+		return 1 - math.pow(2, -10 * t)
+	end
+
+	local spinConnection
+	spinConnection = RunService.Heartbeat:Connect(function(dt)
+		elapsed = math.min(elapsed + dt, duration)
+		local t = elapsed / duration
+		local eased = easeOutExpo(t)
+		local currentPos = startPos + (endPos - startPos) * eased
+		scrollingFrame.CanvasPosition = Vector2.new(currentPos, 0)
+
+		local pixelsPerSecond = math.abs(currentPos - lastCanvasPos) / dt
+		lastCanvasPos = currentPos
+
+		local minTickInterval = FRAME_STEP / math.max(pixelsPerSecond, 1)
+		minTickInterval = math.clamp(minTickInterval, 0.04, 2)
+
+		timeSinceLastTick += dt
+		if timeSinceLastTick >= minTickInterval then
+			timeSinceLastTick = 0
+			playTick()
+		end
+
+		if elapsed >= duration then
+			spinConnection:Disconnect()
+			indexRemote:FireServer(wonModelName, itemId, itemPattern)
+			task.wait(1.5)
+			openFrame.Visible = false
+			sideFrame.Visible = true
+			topFrame.Visible = true
+			isSpinning = false
+
+			local config = ViewportConfigs[wonModelName]
+			showItemViewer(wonModelName, config, itemId, itemPattern)
+		end
+	end)
+end
+
+openCaseButton.MouseButton1Click:Connect(openCase)
+</script>
+
+<script type="text/plain" id="raw-1">
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ItemChances = require(ReplicatedStorage:WaitForChild("ModuleScript"))
+
+local rollRemote = Instance.new("RemoteFunction")
+rollRemote.Name = "RollCase"
+rollRemote.Parent = ReplicatedStorage
+
+local indexRemote = Instance.new("RemoteEvent")
+indexRemote.Name = "UpdateIndex"
+indexRemote.Parent = ReplicatedStorage
+
+local MAX_INDEX = 60
+local CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+local function generateId(length)
+	local result = {}
+	for i = 1, length do
+		local idx = math.random(1, #CHARSET)
+		result[i] = CHARSET:sub(idx, idx)
+	end
+	return table.concat(result)
+end
+
+local function generatePattern()
+	local base = math.random(1, 9999)
+	local decimal = math.random(1000, 9999999)
+	return tostring(base) .. "." .. tostring(decimal)
+end
+
+local function weightedRandom(items)
+	local totalWeight = 0
+	for _, item in ipairs(items) do
+		totalWeight += item.weight
+	end
+	local roll = math.random(1, totalWeight)
+	local cumulative = 0
+	for _, item in ipairs(items) do
+		cumulative += item.weight
+		if roll <= cumulative then
+			return item
+		end
+	end
+	return items[#items]
+end
+
+rollRemote.OnServerInvoke = function(player)
+	local wonItem = weightedRandom(ItemChances)
+	local chosenModel = wonItem.models[math.random(1, #wonItem.models)]
+	local itemId = generateId(16)
+	local itemPattern = generatePattern()
+	return wonItem.name, chosenModel, itemId, itemPattern
+end
+
+indexRemote.OnServerEvent:Connect(function(player, modelName, itemId, itemPattern)
+	if typeof(modelName) ~= "string" then return end
+	if typeof(itemId) ~= "string" then return end
+	if typeof(itemPattern) ~= "string" then return end
+
+	local indexValue = player:FindFirstChild("INDEX")
+	if not indexValue then
+		indexValue = Instance.new("StringValue")
+		indexValue.Name = "INDEX"
+		indexValue.Value = ""
+		indexValue.Parent = player
+	end
+
+	local current = indexValue.Value
+	local entries = {}
+	if current ~= "" then
+		for entry in current:gmatch('"([^"]+)"') do
+			table.insert(entries, entry)
+		end
+	end
+
+	if #entries >= MAX_INDEX then
+		table.remove(entries, 1)
+	end
+
+	local record = modelName .. "|" .. itemId .. "|" .. itemPattern
+	table.insert(entries, record)
+
+	local parts = {}
+	for _, entry in ipairs(entries) do
+		table.insert(parts, '"' .. entry .. '"')
+	end
+	indexValue.Value = table.concat(parts, ",")
+end)
+</script>
+
 </body>
 </html>
