@@ -61,29 +61,6 @@
   .studio-name { font-size: 13px; font-weight: 600; }
   .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: 0.8; }
 
-  /* Hover stretching text effect - Fixed to stretch vertically */
-  .stretching-text {
-    position: absolute;
-    right: 12px;
-    top: 16px;
-    writing-mode: vertical-rl;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    transition: letter-spacing 0.4s ease, opacity 0.3s ease;
-    opacity: 0;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  .work-card:hover .stretching-text {
-    opacity: 1;
-    letter-spacing: 8px;
-  }
-
-  /* Blurred card */
-  .blurred-card { filter: blur(8px); pointer-events: none; opacity: 0.5; }
-
   .scripts-list { display: flex; flex-direction: column; gap: 12px; }
   .script-card { border: 1px solid var(--border); background: var(--card-bg); border-radius: 10px; overflow: hidden; }
   .script-header { display: flex; align-items: center; gap: 14px; padding: 14px 18px; cursor: pointer; }
@@ -146,16 +123,10 @@
     <div class="work-card">
       <div class="work-img-wrap">
         <img src="https://tr.rbxcdn.com/180DAY-80b0fb92da2dab9e8f9391801c936662/150/150/Image/Webp/noFilter" alt="Creation Studios">
-        <div class="stretching-text">@scriptdotparent</div>
         <div class="work-hover-info">
           <div class="studio-name">Creation Studios</div>
           <div class="stat-val">Lead scripter | studio abandoned by owner.</div>
         </div>
-      </div>
-    </div>
-    <div class="work-card blurred-card">
-      <div class="work-img-wrap">
-        <img src="https://tr.rbxcdn.com/180DAY-80b0fb92da2dab9e8f9391801c936662/150/150/Image/Webp/noFilter" alt="Hidden Project">
       </div>
     </div>
   </div>
