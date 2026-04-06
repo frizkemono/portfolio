@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,36 +68,33 @@
   .script-chevron { color: var(--muted); transition: transform 0.3s; margin-left: auto; }
   .script-card.open .script-chevron { transform: rotate(180deg); }
   
-  /* FIXED SCROLLING LOGIC */
   .script-body { 
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.4s ease-out; 
   }
   .script-card.open .script-body { 
-    max-height: 500px; /* Set a reasonable max height for the viewport */
-    overflow-y: auto;  /* Enable vertical scroll */
+    max-height: 500px; 
+    overflow-y: auto;
   }
   .script-code-wrap { 
     border-top: 1px solid var(--border); 
     background: var(--code-bg); 
     padding: 20px;
-    overflow-x: auto; /* Enable horizontal scroll */
+    overflow-x: auto;
   }
   pre { 
     font-family: 'JetBrains Mono', monospace; 
     font-size: 12.5px; 
     line-height: 1.7; 
     color: #cdd6f4;
-    white-space: pre; /* Keeps code structure */
+    white-space: pre;
   }
 
   .kw { color: #cba6f7; }
-  .fn { color: #89b4fa; }
   .str { color: #a6e3a1; }
   .cmt { color: #6c7086; font-style: italic; }
 
-  /* Custom Scrollbar for Dark Mode feel */
   .script-body::-webkit-scrollbar { width: 8px; height: 8px; }
   .script-body::-webkit-scrollbar-track { background: var(--code-bg); }
   .script-body::-webkit-scrollbar-thumb { background: #313244; border-radius: 4px; }
@@ -152,6 +149,24 @@
       </div>
       <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
     </div>
+
+    <div class="script-card" data-script-id="gun">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="crosshair" color="#fff" width="18"></i></div>
+        <div class="script-title">gunclient.local.luau</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
+    </div>
+
+    <div class="script-card" data-script-id="loot">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="database" color="#fff" width="18"></i></div>
+        <div class="script-title">Loot chances (MODULE).luau</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
+    </div>
   </div>
 </main>
 
@@ -165,22 +180,19 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local mouse = player:GetMouse()
 local camera = workspace.CurrentCamera
--- Adding dummy lines to demonstrate scrolling
--- Line 1
--- Line 2
--- Line 3
--- Line 4
--- Line 5
--- Line 6
--- Line 7
--- Line 8
--- Line 9
--- Line 10
--- Line 11
--- Line 12
--- Line 13
--- Line 14
--- Line 15
+local MainModule = require(ReplicatedStorage:WaitForChild("Main"))
+local Remote = MainModule.GatewayEvent
+local ToolData = ReplicatedStorage:WaitForChild("tooldata")
+
+function ClientModule.Init(inventoryGui)
+	ScreenGui = inventoryGui
+	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+	MainUI = ScreenGui:WaitForChild("Main")
+	InvHolder = MainUI:WaitForChild("Inventory"):WaitForChild("MainHolder")
+	VicHolder = MainUI:WaitForChild("Vicinity"):WaitForChild("MainHolder")
+end
+
+return ClientModule
 </script>
 
 <script type="text/plain" id="raw-inventory">
@@ -189,6 +201,64 @@ local Player = game.Players.LocalPlayer
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ToolData = ReplicatedStorage:WaitForChild("tooldata")
+
+function InventoryModule.Update(action, data)
+    if action == "VicinityRemove" then
+        for _, v in ipairs(VicHolder:GetChildren()) do
+            if v:IsA("ImageButton") then
+                local ref = v:FindFirstChild("ItemRef")
+                if ref and ref.Value == data.LootInstance then
+                    v:Destroy()
+                    return
+                end
+            end
+        end
+    end
+end
+
+return InventoryModule
+</script>
+
+<script type="text/plain" id="raw-gun">
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local Player = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+local Mouse = Player:GetMouse()
+
+UIS.InputBegan:Connect(function(input, gp)
+	if gp then return end
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		IsTriggerHeld = true
+		if IsEquipped and CanShoot and not IsReloading then
+			playAnim("Fire", 0)
+		end
+	end
+end)
+</script>
+
+<script type="text/plain" id="raw-loot">
+local LootChances = {}
+
+LootChances.FloorTiers = {
+	Bench = {
+		{ name = "green key", weight = 100 },
+	},
+	IndoorCommonHouse = {
+		{ name = "green key", weight = 60 },
+	},
+}
+
+LootChances.CrateLoot = {
+	woodencrate = {
+		{ name = "green key", weight = 50 },
+	},
+}
+
+return LootChances
 </script>
 
 <script>
@@ -217,7 +287,7 @@ themeToggle.addEventListener('click', () => {
 function highlight(raw) {
   return raw.split('\n').map(line => {
     if (line.trim().startsWith('--')) return `<span class="cmt">${line}</span>`;
-    return line.replace(/\b(local|function|end|if|then|return)\b/g, '<span class="kw">$1</span>');
+    return line.replace(/\b(local|function|end|if|then|return|require|game|GetService|WaitForChild|Connect)\b/g, '<span class="kw">$1</span>');
   }).join('\n');
 }
 
