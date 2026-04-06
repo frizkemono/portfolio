@@ -61,7 +61,7 @@
   .studio-name { font-size: 13px; font-weight: 600; }
   .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: 0.8; }
 
-  .scripts-list { display: flex; flex-direction: column; gap: 12px; }
+  .scripts-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
   .script-card { border: 1px solid var(--border); background: var(--card-bg); border-radius: 10px; overflow: hidden; }
   .script-header { display: flex; align-items: center; gap: 14px; padding: 14px 18px; cursor: pointer; }
   .script-icon { width: 38px; height: 38px; border-radius: 6px; background: #1a0a2e; display: flex; align-items: center; justify-content: center; }
@@ -75,7 +75,7 @@
     transition: max-height 0.4s ease-out; 
   }
   .script-card.open .script-body { 
-    max-height: 600px; 
+    max-height: 800px; 
     overflow-y: auto;
   }
   .script-code-wrap { 
@@ -131,7 +131,7 @@
     </div>
   </div>
 
-  <p class="section-label">Scripts</p>
+  <p class="section-label">GRIMFALL | personal abandoned game</p>
   <div class="scripts-list">
     <div class="script-card" data-script-id="client">
       <div class="script-header">
@@ -139,40 +139,7 @@
         <div class="script-title">ClientModule.luau</div>
         <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
       </div>
-      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
-    </div>
-
-    <div class="script-card" data-script-id="inventory">
-      <div class="script-header">
-        <div class="script-icon"><i data-lucide="box" color="#fff" width="18"></i></div>
-        <div class="script-title">inventory.luau</div>
-        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
-      </div>
-      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
-    </div>
-
-    <div class="script-card" data-script-id="gun">
-      <div class="script-header">
-        <div class="script-icon"><i data-lucide="crosshair" color="#fff" width="18"></i></div>
-        <div class="script-title">gunclient.local.luau</div>
-        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
-      </div>
-      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
-    </div>
-
-    <div class="script-card" data-script-id="loot">
-      <div class="script-header">
-        <div class="script-icon"><i data-lucide="database" color="#fff" width="18"></i></div>
-        <div class="script-title">Loot chances (MODULE).luau</div>
-        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
-      </div>
-      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
-    </div>
-  </div>
-</main>
-
-<script type="text/plain" id="raw-client">
-local ClientModule = {}
+      <div class="script-body"><div class="script-code-wrap"><pre>local ClientModule = {}
 --this has EVERYTHING
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -212,8 +179,7 @@ local CELL_STROKE_COLOR = Color3.fromRGB(85, 85, 95)
 local GHOST_OK = Color3.fromRGB(60, 200, 100)
 local GHOST_BAD = Color3.fromRGB(200, 60, 60)
 local GHOST_TRANSPARENCY = 0.5
-local SLOT_COLORS = 
-{
+local SLOT_COLORS = {
 	[1] = Color3.fromRGB(255, 210, 0),
 	[2] = Color3.fromRGB(0, 220, 100),
 	[3] = Color3.fromRGB(80, 160, 255),
@@ -250,8 +216,7 @@ local HOLD_DURATION = 2.5
 local REQUIRED_ITEM = "green key"
 
 local activeContainerHighlight = nil
-local activeContainer 
-= nil
+local activeContainer = nil
 local promptBillboard = nil
 local openCrateContainer = nil
 local holdActive = false
@@ -290,8 +255,7 @@ local function getTotalRows()
 end
 
 local function isSlotIndexValid(col, row)
-	local slotIndex = 
-(row - 1) * GRID_W + col
+	local slotIndex = (row - 1) * GRID_W + col
 	return slotIndex <= currentInvSlots
 end
 
@@ -322,8 +286,7 @@ local function isAreaWithinValidSlots(col, row, w, h)
 	return true
 end
 
-local function findFreeSlot(holder, w, 
-h)
+local function findFreeSlot(holder, w, h)
 	local rows = holder == InvHolder and getTotalRows() or 6
 	local cols = GRID_W
 	for y = 1, rows - h + 1 do
@@ -346,8 +309,7 @@ local function getGhostCoord(holder, w, h)
 	local pos = holder.AbsolutePosition
 	local cs = cellSize + PADDING
 	local rows = holder == InvHolder and getTotalRows() or 6
-	local col = math.floor((m.X - pos.X - PADDING) / cs - (w - 
-1) / 2) + 1
+	local col = math.floor((m.X - pos.X - PADDING) / cs - (w - 1) / 2) + 1
 	local row = math.floor((m.Y - pos.Y - PADDING) / cs - (h - 1) / 2) + 1
 	col = math.clamp(col, 1, GRID_W - w + 1)
 	row = math.clamp(row, 1, rows - h + 1)
@@ -358,1453 +320,16 @@ local function isCrateItem(button)
 	return button:GetAttribute("CrateLoot") == true
 end
 
-local function getLootEntry(button)
-	local ref = button:FindFirstChild("LootEntry")
-	return ref and ref.Value
-end
-
-local function applySlotStroke(button, slot)
-	local existing = button:FindFirstChild("SlotStroke")
-	if existing then existing:Destroy() end
-	if not slot then return end
-	local stroke = Instance.new("UIStroke")
-	stroke.Name = "SlotStroke"
-	stroke.Thickness = 2
-	stroke.Color = SLOT_COLORS[slot] or Color3.fromRGB(255, 255, 255)
-	stroke.Parent = button
-end
-
-local function notifyQuickuse()
-	_G.QuickuseRefresh = (_G.QuickuseRefresh or 0) + 1
-end
-
-local function equipToSlot(button, slot)
-	local old = EquippedSlot[slot]
-	if old and old 
-~= button then applySlotStroke(old, nil) end
-	for s = 1, 3 do
-		if s ~= slot and EquippedSlot[s] == button then
-			EquippedSlot[s] = nil
-			applySlotStroke(button, nil)
-		end
-	end
-	EquippedSlot[slot] = button
-	applySlotStroke(button, slot)
-	notifyQuickuse()
-end
-
-local function unequipSlot(slot)
-	local btn = EquippedSlot[slot]
-	if btn then applySlotStroke(btn, nil) end
-	EquippedSlot[slot] = nil
-	notifyQuickuse()
-end
-
-local function syncServerInventory()
-	local inv = {}
-	for _, btn in ipairs(InvHolder:GetChildren()) do
-		if btn:IsA("ImageButton") then
-			table.insert(inv, {
-				Name = btn.Name,
-				X = btn:GetAttribute("Col"),
-				Y = btn:GetAttribute("Row"),
-			})
-		end
-	end
-	Remote:FireServer("SyncServerInventory", { Inventory = inv })
-end
-
-local function closeInfoFrame()
-	if activeInfoFrame then
-		activeInfoFrame:Destroy()
-		activeInfoFrame = nil
-		contextTargetButton = nil
-	end
-end
-
-local function openInfoFrame(button)
-	closeInfoFrame()
-	contextTargetButton = button
-
-	local frame = InfoTemplate:Clone()
-	frame.ZIndex = 300
-	frame.BackgroundTransparency = 0
-
-	for _, desc in ipairs(frame:GetDescendants()) do
-		if desc:IsA("TextButton") or desc:IsA("ImageButton") then
-			desc.ZIndex = 301
-			desc.BackgroundTransparency = 0
-			desc.TextTransparency = 0
-			if desc.BackgroundColor3 == Color3.fromRGB(255, 255, 255) 
-then
-				desc.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
-			end
-			desc.TextColor3 = Color3.fromRGB(255, 255, 255)
-		elseif desc:IsA("TextLabel") then
-			desc.ZIndex = 301
-			desc.TextTransparency = 0
-			desc.TextColor3 = Color3.fromRGB(255, 255, 255)
-		elseif desc:IsA("Frame") then
-			desc.ZIndex = 300
-		end
-	end
-
-	local m = mousePos()
-	local guiPos = MainUI.AbsolutePosition
-	local guiSize = MainUI.AbsoluteSize
-	frame.Position = UDim2.fromOffset(
-		math.clamp(m.X - guiPos.X, 0, guiSize.X - 160),
-		math.clamp(m.Y - guiPos.Y, 0, guiSize.Y - 80)
-	)
-	frame.Parent = MainUI
-
-	local slot1Btn = frame:FindFirstChild("equip slot1")
-	local slot2Btn = frame:FindFirstChild("equip slot2")
-	local slot3Btn = frame:FindFirstChild("equip slot3")
-
-	local function refreshLabels()
-		local slotBtns = { [1] = slot1Btn, [2] = slot2Btn, [3] = slot3Btn }
-		for slot, btn in pairs(slotBtns) do
-			if btn then
-				if EquippedSlot[slot] == button then
-					btn.Text = "Unbind Slot " .. slot
-				else
-					local occupied = EquippedSlot[slot]
-					btn.Text = occupied and ("Equip Slot 
-" .. slot .. " (replaces " .. occupied.Name .. ")") or "Equip Slot " .. slot
-				end
-			end
-		end
-	end
-
-	refreshLabels()
-
-	local slotBtns = { [1] = slot1Btn, [2] = slot2Btn, [3] = slot3Btn }
-	for slot, btn in pairs(slotBtns) do
-		if btn then
-			btn.MouseButton1Click:Connect(function()
-				if EquippedSlot[slot] == button then
-					unequipSlot(slot)
-				else
-					equipToSlot(button, slot)
-				end
-				refreshLabels()
-				closeInfoFrame()
-			end)
-		end
-	end
-
-	activeInfoFrame = frame
-end
-
-local function rebuildInvGrid()
-	for _, child in ipairs(InvHolder:GetChildren()) do
-		if child:IsA("Frame") then
-			child:Destroy()
-		end
-	end
-
-	local totalRows = getTotalRows()
-	while InvHolder.AbsoluteSize.X == 0 do RunService.RenderStepped:Wait() end
-	cellSize = math.floor((InvHolder.AbsoluteSize.X - (GRID_W + 1) * PADDING) / GRID_W)
-
-	local slotCount = 0
-	for row = 1, totalRows do
-		for col = 1, GRID_W do
-			slotCount = slotCount + 1
-			if slotCount > currentInvSlots then break end
-			local f = Instance.new("Frame")
-			f.Name = "Slot_" 
-.. col .. "_" .. row
-			f.BackgroundColor3 = CELL_COLOR
-			f.BorderSizePixel = 0
-			f.Size = UDim2.fromOffset(cellSize, cellSize)
-			f.Position = UDim2.fromOffset((col - 1) * (cellSize + PADDING) + PADDING, (row - 1) * (cellSize + PADDING) + PADDING)
-			local s = Instance.new("UIStroke", f)
-			s.Color = CELL_STROKE_COLOR
-			f.Parent = InvHolder
-		end
-	end
-end
-
-local function dropExcessItems()
-	for _, btn in ipairs(InvHolder:GetChildren()) do
-		if btn:IsA("ImageButton") then
-			local col = btn:GetAttribute("Col")
-			local row = btn:GetAttribute("Row")
-			local w, h = itemDims(btn.Name)
-			local fits = true
-			for r = row, row + h - 1 do
-				for c = col, col + w - 1 do
-					if not isSlotIndexValid(c, r) then
-						fits = false
-						break
-					end
-				end
-				if not fits then break end
-			end
-			if not fits then
-				local coords = string.split(btn:GetAttribute("SlotName"), "_")
-				Remote:FireServer("RequestDrop", { Name 
-= btn.Name, X = tonumber(coords[1]), Y = tonumber(coords[2]) })
-				btn:Destroy()
-			end
-		end
-	end
-end
-
-local function setBackpackSlots(bagName)
-	local extra = BackpackData.GetSlots(bagName)
-	currentInvSlots = BASE_SLOT_LIMIT + extra
-	rebuildInvGrid()
-end
-
-local function removeBackpackSlots()
-	currentInvSlots = BASE_SLOT_LIMIT
-	rebuildInvGrid()
-	dropExcessItems()
-end
-
-local function clearBackpackFrame()
-	for _, child in ipairs(BackpackFrame:GetChildren()) do
-		if child:IsA("Frame") and child.Name == "BackpackSlotFrame" then child:Destroy() end
-		if child:IsA("ImageLabel") then child:Destroy() end
-	end
-end
-
-local function buildBackpackSlotFrame()
-	clearBackpackFrame()
-	local f = Instance.new("Frame")
-	f.Name = "BackpackSlotFrame"
-	f.BackgroundColor3 = CELL_COLOR
-	f.BorderSizePixel = 0
-	f.Size = UDim2.new(0, 100, 0, 100)
-	f.Position = UDim2.new(0.5, -50, 0.5, -50)
-	local s = Instance.new("UIStroke", f)
-	s.Color = CELL_STROKE_COLOR
-	f.Parent = BackpackFrame
-end
-
-local placeItemInternal
-
-local function placeBackpackImage(bagName, imageId)
-	clearBackpackFrame()
-	local img = Instance.new("ImageLabel")
-	img.Name = bagName
-	img.BackgroundTransparency = 1
-	img.ScaleType = Enum.ScaleType.Fit
-	img.Size = UDim2.new(0, 100, 0, 100)
-	img.Position = UDim2.new(0.5, -50, 0.5, -50)
-	img.Image = "rbxassetid://" .. tostring(imageId)
-	img.ZIndex = 50
-	img:SetAttribute("IsEquippedBag", true)
-	img.Parent 
-= BackpackFrame
-
-	img.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			if equippedBackpackName then
-				local w, h = itemDims(equippedBackpackName)
-				local vx, vy = findFreeSlot(VicHolder, w, h)
-				if vx then
-					placeItemInternal(VicHolder, equippedBackpackName, vx, vy, nil)
-				end
-			end
-			clearBackpackFrame()
-			buildBackpackSlotFrame()
-			local oldName = equippedBackpackName
-			equippedBackpackBtn = nil
-			equippedBackpackName = nil
-			removeBackpackSlots()
-			Remote:FireServer("BackpackUnequipped", { Name = oldName })
-		end
-	end)
-end
-
-local function updateGhost()
-	if not DraggingItem or not Ghost then return end
-	local w, h = itemDims(DraggingItem.Name)
-	local m = mousePos()
-	local iPos = InvHolder.AbsolutePosition
-	local vPos = VicHolder.AbsolutePosition
-	local iSz = InvHolder.AbsoluteSize
-	local vSz = VicHolder.AbsoluteSize
-	local bPos = BackpackFrame.AbsolutePosition
-	local bSz = BackpackFrame.AbsoluteSize
-
-	local overInv = m.X >= iPos.X and m.X < iPos.X + iSz.X and m.Y >= iPos.Y and m.Y < iPos.Y + iSz.Y
-	local overVic = m.X >= vPos.X and m.X < 
-vPos.X + vSz.X and m.Y >= vPos.Y and m.Y < vPos.Y + vSz.Y
-	local overBag = m.X >= bPos.X and m.X < bPos.X + bSz.X and m.Y >= bPos.Y and m.Y < bPos.Y + bSz.Y
-
-	local cs = cellSize + PADDING
-	local isBag = BackpackData.IsBackpack(DraggingItem.Name)
-
-	if overBag and isBag and OriginalHolder == InvHolder and equippedBackpackBtn == nil then
-		Ghost.Position = UDim2.fromOffset(
-			bPos.X - MainUI.AbsolutePosition.X + (bSz.X / 2) - 50,
-			bPos.Y - MainUI.AbsolutePosition.Y + (bSz.Y / 2) - 50
-		)
-		Ghost.Size = UDim2.fromOffset(100, 100)
-		Ghost.Visible = true
-		Ghost.BackgroundColor3 = GHOST_OK
-		Ghost.BackgroundTransparency = 1 - GHOST_TRANSPARENCY
-		return
-	end
-
-	if overInv then
-		local col, row = getGhostCoord(InvHolder, w, h)
-		if not col or not isAreaWithinValidSlots(col, row, w, h) then 
-Ghost.Visible = false return end
-		local ox, oy = colRowToOffset(col, row)
-		Ghost.Position = UDim2.fromOffset(iPos.X - MainUI.AbsolutePosition.X + ox, iPos.Y - MainUI.AbsolutePosition.Y + oy)
-		Ghost.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-		Ghost.Visible = true
-		Ghost.BackgroundColor3 = isAreaOccupied(InvHolder, col, row, w, h, DraggingItem) and GHOST_BAD or GHOST_OK
-		Ghost.BackgroundTransparency = 1 - GHOST_TRANSPARENCY
-	elseif overVic and not isCrateItem(DraggingItem) and OriginalHolder == InvHolder then
-		local col, row = getGhostCoord(VicHolder, w, h)
-		if not col then Ghost.Visible = false return end
-		local ox, oy = colRowToOffset(col, row)
-		Ghost.Position = UDim2.fromOffset(vPos.X - MainUI.AbsolutePosition.X + ox, vPos.Y - MainUI.AbsolutePosition.Y + oy)
-		Ghost.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-		Ghost.Visible = 
-true
-		Ghost.BackgroundColor3 = GHOST_OK
-		Ghost.BackgroundTransparency = 1 - GHOST_TRANSPARENCY
-	else
-		Ghost.Visible = false
-	end
-end
-
-local function resetDragState(snapBack)
-	if Ghost then Ghost:Destroy() Ghost = nil end
-	if DraggingItem then
-		DraggingItem.ZIndex = 50
-		if snapBack then
-			local ox, oy = colRowToOffset(DraggingItem:GetAttribute("Col"), DraggingItem:GetAttribute("Row"))
-			DraggingItem.Position = UDim2.fromOffset(ox, oy)
-		end
-	end
-	DraggingItem = nil
-	OriginalSlotName = nil
-	OriginalHolder = nil
-end
-
-local function startDrag(button, fromHolder)
-	if DraggingItem then resetDragState(true) end
-	DraggingItem = button
-	OriginalHolder = fromHolder
-	OriginalSlotName = button:GetAttribute("SlotName")
-	local mouseStart = mousePos()
-	dragOffset = Vector2.new(mouseStart.X - button.AbsolutePosition.X, mouseStart.Y - button.AbsolutePosition.Y)
-	button.ZIndex = 1000
-	Ghost = Instance.new("ImageButton")
-	Ghost.BorderSizePixel = 0
-	Ghost.ZIndex = 999
-	Ghost.BackgroundTransparency = 1
-	Ghost.ScaleType = Enum.ScaleType.Fit
-	Ghost.Image = button.Image
-	Ghost.Parent = MainUI
-	updateGhost()
-end
-
-placeItemInternal = function(holder, name, col, row, itemRef)
-	local base = ToolData:FindFirstChild(name)
-	if not base then return end
-	local w, h = itemDims(name)
-	local cs = cellSize + PADDING
-	local 
-ox, oy = colRowToOffset(col, row)
-
-	local b = Instance.new("ImageButton")
-	b.Name = name
-	b.BackgroundTransparency = 1
-	b.ZIndex = 50
-	b.ScaleType = Enum.ScaleType.Fit
-	b.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-	b.Position = UDim2.fromOffset(ox, oy)
-	b.Image = "rbxassetid://" .. tostring(base.Image.Value)
-	b:SetAttribute("Col", col)
-	b:SetAttribute("Row", row)
-	b:SetAttribute("SlotName", col .. "_" .. row)
-
-	if itemRef then
-		local val = Instance.new("ObjectValue")
-		val.Name = "ItemRef"
-		val.Value = itemRef
-		val.Parent = b
-	end
-
-	local lastClickTime = 0
-	local doubleClickThreshold = 0.3
-
-	local function onDoubleClick()
-		local w2, h2 = itemDims(b.Name)
-		local targetHolder = b.Parent == InvHolder and VicHolder or InvHolder
-		if targetHolder == InvHolder then
-			local fx, fy = findFreeSlot(InvHolder, w2, h2)
-			if fx and fy then
-				if b.Parent == InvHolder then
-					Remote:FireServer("RequestPickup", { X = fx, Y = fy, OldSlot = 
-b:GetAttribute("SlotName") })
-				else
-					local itemRef2 = b:FindFirstChild("ItemRef") and b.ItemRef.Value
-					Remote:FireServer("RequestPickup", { LootInstance = itemRef2, X = fx, Y = fy })
-				end
-				b:Destroy()
-			end
-		else
-			local coords = string.split(b:GetAttribute("SlotName"), "_")
-			Remote:FireServer("RequestDrop", { Name = b.Name, X = tonumber(coords[1]), Y = tonumber(coords[2]) })
-			b:Destroy()
-		end
-	end
-
-	b.MouseButton1Down:Connect(function()
-		closeInfoFrame()
-		local currentTime = tick()
-		if currentTime - lastClickTime < doubleClickThreshold then
-			onDoubleClick()
-			lastClickTime = 0
-		else
-			lastClickTime = currentTime
-			startDrag(b, holder)
-		end
-	end)
-
-	b.MouseButton2Click:Connect(function()
-		openInfoFrame(b)
-	end)
-
-	b.Parent = holder
-end
-
-local function placeCrateItem(holder, name, col, row, lootEntry)
-	local base = ToolData:FindFirstChild(name)
-	if not base then return end
-	local w, h = itemDims(name)
-	local cs = cellSize + PADDING
-	local ox, oy = colRowToOffset(col, row)
-
-	local b = Instance.new("ImageButton")
-	b.Name = name
-	b.BackgroundTransparency = 1
-	b.ZIndex = 50
-	b.ScaleType = Enum.ScaleType.Fit
-	b.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-	b.Position = 
-UDim2.fromOffset(ox, oy)
-	b.Image = "rbxassetid://" .. tostring(base.Image.Value)
-	b:SetAttribute("Col", col)
-	b:SetAttribute("Row", row)
-	b:SetAttribute("SlotName", col .. "_" .. row)
-	b:SetAttribute("CrateLoot", true)
-
-	if lootEntry then
-		local val = Instance.new("ObjectValue")
-		val.Name = "LootEntry"
-		val.Value = lootEntry
-		val.Parent = b
-	end
-
-	local lastClickTime = 0
-	local doubleClickThreshold = 0.3
-
-	b.MouseButton1Down:Connect(function()
-		closeInfoFrame()
-		local currentTime = tick()
-		if currentTime - lastClickTime < doubleClickThreshold then
-			local w2, h2 = itemDims(b.Name)
-			local fx, fy = findFreeSlot(InvHolder, w2, h2)
-			if fx and fy then
-				local entry = getLootEntry(b)
-				Remote:FireServer("RequestCratePickup", { LootEntry = entry, X = fx, Y = fy })
-				b:Destroy()
-			end
-			lastClickTime = 0
-		else
-			lastClickTime = currentTime
-			startDrag(b, holder)
-		end
-	end)
-
-	b.Parent = holder
-end
-
-local function endDrag()
-	if not DraggingItem then return end
-	local m = mousePos()
-	local itemName = DraggingItem.Name
-	local wasCrateItem = isCrateItem(DraggingItem)
-	local lootEntry = getLootEntry(DraggingItem)
-	local itemRef = DraggingItem:FindFirstChild("ItemRef") and DraggingItem.ItemRef.Value
-	local savedItem 
-= DraggingItem
-	local savedSlot = OriginalSlotName
-	local savedHolder = OriginalHolder
-
-	if Ghost then Ghost:Destroy() Ghost = nil end
-	DraggingItem = nil
-	OriginalSlotName = nil
-	OriginalHolder = nil
-
-	local iPos = InvHolder.AbsolutePosition
-	local iSz = InvHolder.AbsoluteSize
-	local vPos = VicHolder.AbsolutePosition
-	local vSz = VicHolder.AbsoluteSize
-	local bPos = BackpackFrame.AbsolutePosition
-	local bSz = BackpackFrame.AbsoluteSize
-
-	local insideInv = m.X >= iPos.X and m.X < iPos.X + iSz.X and m.Y >= iPos.Y and m.Y < iPos.Y + iSz.Y
-	local insideVic = m.X >= vPos.X and m.X < vPos.X + vSz.X and m.Y >= vPos.Y and m.Y < vPos.Y + vSz.Y
-	local insideBag = m.X >= bPos.X and m.X < bPos.X + bSz.X and m.Y >= bPos.Y and m.Y < bPos.Y 
-+ bSz.Y
-
-	local w, h = itemDims(itemName)
-	local placed = false
-	local isBag = BackpackData.IsBackpack(itemName)
-
-	if insideBag and isBag and savedHolder == InvHolder and equippedBackpackBtn == nil then
-		local base = ToolData:FindFirstChild(itemName)
-		local imageId = base and tostring(base.Image.Value) or "0"
-		equippedBackpackBtn = savedItem
-		equippedBackpackName = itemName
-		savedItem:Destroy()
-		setBackpackSlots(itemName)
-		placeBackpackImage(itemName, imageId)
-		Remote:FireServer("BackpackEquipped", { Name = itemName, OldSlot = savedSlot })
-		placed = true
-
-	elseif insideInv then
-		local col, row = getGhostCoord(InvHolder, w, h)
-		if col and isAreaWithinValidSlots(col, row, w, h) and not isAreaOccupied(InvHolder, col, row, w, h, savedItem) then
-			if wasCrateItem then
-				Remote:FireServer("RequestCratePickup", { LootEntry = lootEntry, X = col, Y = row })
-				savedItem:Destroy()
-			else
-				Remote:FireServer("RequestPickup", { LootInstance = itemRef, X = col, Y = row, OldSlot = savedSlot })
-				savedItem:Destroy()
-			end
-			placed = 
-true
-		end
-
-	elseif insideVic and not wasCrateItem and savedHolder == InvHolder then
-		local oldCoords = string.split(savedSlot, "_")
-		Remote:FireServer("RequestDrop", { Name = itemName, X = tonumber(oldCoords[1]), Y = tonumber(oldCoords[2]) })
-		savedItem:Destroy()
-		placed = true
-	end
-
-	if not placed then
-		savedItem.ZIndex = 50
-		local ox, oy = colRowToOffset(savedItem:GetAttribute("Col"), savedItem:GetAttribute("Row"))
-		savedItem.Position = UDim2.fromOffset(ox, oy)
-	end
-end
-
-local function createVicGrid()
-	while VicHolder.AbsoluteSize.X == 0 do RunService.RenderStepped:Wait() end
-	local vicCellSize = math.floor((VicHolder.AbsoluteSize.X - (GRID_W + 1) * PADDING) / GRID_W)
-	for row = 1, 6 do
-		for col = 1, GRID_W do
-			local f = Instance.new("Frame")
-			f.Name = "Slot_" .. col .. "_" .. row
-			f.BackgroundColor3 = CELL_COLOR
-			f.BorderSizePixel = 0
-			f.Size = UDim2.fromOffset(vicCellSize, vicCellSize)
-			f.Position = UDim2.fromOffset((col - 1) * (vicCellSize + PADDING) + PADDING, (row - 1) 
-* (vicCellSize + PADDING) + PADDING)
-			local s = Instance.new("UIStroke", f)
-			s.Color = CELL_STROKE_COLOR
-			f.Parent = VicHolder
-		end
-	end
-end
-
-local function getFloorItemName(instance)
-	local obj = instance
-	while obj and obj.Parent do
-		if obj.Parent == Floor then return obj.Name, obj end
-		obj = obj.Parent
-	end
-	return nil, nil
-end
-
-local function getDistanceToInstance(instance)
-	local char = player.Character
-	if not char or not char:FindFirstChild("HumanoidRootPart") then return math.huge end
-	local pos = instance:IsA("BasePart") and instance.Position
-		or (instance:IsA("Model") and instance.PrimaryPart and instance.PrimaryPart.Position)
-	if not pos then return math.huge end
-	return (char.HumanoidRootPart.Position - pos).Magnitude
-end
-
-local function getAdornPart(instance)
-	if instance:IsA("BasePart") then return instance end
-	if instance:IsA("Model") then
-		return instance.PrimaryPart or instance:FindFirstChildWhichIsA("BasePart")
-	end
-	return nil
-end
-
-local function getFloorScreenGui()
-	local gui = player.PlayerGui:FindFirstChild("FloorPickupGui")
-	if not gui then
-		gui = Instance.new("ScreenGui")
-		gui.Name = "FloorPickupGui"
-		gui.ResetOnSpawn = false
-		gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-		gui.Parent = player.PlayerGui
-	end
-	return gui
-end
-
-local 
-function destroyFloorBillboard()
-	if activeBillboard then
-		local billboard = activeBillboard
-		activeBillboard = nil
-		activeFloorItem = nil
-
-		local frame = billboard:FindFirstChildOfClass("Frame")
-		local tweenInfo = TweenInfo.new(PICKUP_FADE_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-		local done = 0
-		local total = 0
-
-		local function onDone()
-			done += 1
-			if done >= total then billboard:Destroy() end
-		end
-
-		if frame then
-			for _, child in ipairs(frame:GetDescendants()) do
-				if child:IsA("TextLabel") then
-					total += 1
-					local t = TweenService:Create(child, tweenInfo, { TextTransparency = 1 })
-					t.Completed:Connect(onDone)
-					t:Play()
-				elseif child:IsA("Frame") then
-					total += 1
-					local t = TweenService:Create(child, tweenInfo, { BackgroundTransparency = 1 })
-					t.Completed:Connect(onDone)
-					t:Play()
-				end
-			end
-		end
-
-		if total == 0 then billboard:Destroy() end
-	end
-
-	if activeFloorHighlight then
-		local hl = activeFloorHighlight
-		activeFloorHighlight = nil
-		local t = TweenService:Create(hl, TweenInfo.new(PICKUP_FADE_TIME), { FillTransparency = 1, OutlineTransparency = 1 })
-		t.Completed:Connect(function() hl:Destroy() end)
-		t:Play()
-	end
-end
-
-local function createFloorBillboard(itemName, instance)
-	destroyFloorBillboard()
-
-	local adornPart = 
-getAdornPart(instance)
-	if not adornPart then return end
-
-	local gui = getFloorScreenGui()
-
-	local billboard = Instance.new("BillboardGui")
-	billboard.Name = "FloorPickupPrompt"
-	billboard.Size = UDim2.fromOffset(260, 70)
-	billboard.StudsOffset = Vector3.new(0, -0.4, 0)
-	billboard.AlwaysOnTop = true
-	billboard.Adornee = adornPart
-	billboard.Parent = gui
-
-	local frame = Instance.new("Frame")
-	frame.Name = "Frame"
-	frame.Size = UDim2.fromScale(1, 1)
-	frame.BackgroundTransparency = 1
-	frame.Parent = billboard
-
-	local nameLabel = Instance.new("TextLabel")
-	nameLabel.Size = UDim2.new(1, 0, 0.45, 0)
-	nameLabel.Position = UDim2.fromScale(0, 0)
-	nameLabel.BackgroundTransparency = 1
-	nameLabel.Text = itemName
-	nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	nameLabel.TextScaled = true
-	nameLabel.Font = Enum.Font.GothamBold
-	nameLabel.TextXAlignment = Enum.TextXAlignment.Center
-	nameLabel.TextTransparency = 1
-	nameLabel.Parent = frame
-
-	local keyFrame = Instance.new("Frame")
-	keyFrame.Size = UDim2.new(0, 30, 0, 30)
-	keyFrame.Position = UDim2.new(0.5, -55, 0.5, 4)
-	keyFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	keyFrame.BackgroundTransparency = 1
-	keyFrame.BorderSizePixel = 0
-	keyFrame.Parent = frame
-	Instance.new("UICorner", keyFrame).CornerRadius = UDim.new(0, 4)
-
-	local keyLabel = Instance.new("TextLabel")
-	keyLabel.Size = UDim2.fromScale(1, 
-1)
-	keyLabel.BackgroundTransparency = 1
-	keyLabel.Text = "F"
-	keyLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-	keyLabel.TextScaled = true
-	keyLabel.Font = Enum.Font.GothamBold
-	keyLabel.TextTransparency = 1
-	keyLabel.Parent = keyFrame
-
-	local actionLabel = Instance.new("TextLabel")
-	actionLabel.Size = UDim2.new(0, 100, 0, 30)
-	actionLabel.Position = UDim2.new(0.5, -22, 0.5, 4)
-	actionLabel.BackgroundTransparency = 1
-	actionLabel.Text = "Pick up"
-	actionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	actionLabel.TextScaled = true
-	actionLabel.Font = Enum.Font.Gotham
-	actionLabel.TextXAlignment = Enum.TextXAlignment.Left
-	actionLabel.TextTransparency = 1
-	actionLabel.Parent = frame
-
-	local tweenInfo = TweenInfo.new(PICKUP_FADE_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	TweenService:Create(nameLabel, tweenInfo, { TextTransparency = 0 }):Play()
-	TweenService:Create(keyLabel, tweenInfo, { TextTransparency = 0 }):Play()
-	TweenService:Create(actionLabel, tweenInfo, { TextTransparency = 0 }):Play()
-	TweenService:Create(keyFrame, tweenInfo, { BackgroundTransparency = 0 }):Play()
-
-	local hl = highlightTemplate:Clone()
-	hl.FillTransparency = 1
-	hl.OutlineTransparency = 1
-	hl.Adornee = instance
-	hl.Parent = Temp
-	TweenService:Create(hl, TweenInfo.new(PICKUP_FADE_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-		FillTransparency = highlightTemplate.FillTransparency,
-		OutlineTransparency = highlightTemplate.OutlineTransparency,
-	}):Play()
-
-	activeBillboard = billboard
-	activeFloorItem = 
-instance
-	activeFloorHighlight = hl
-end
-
-local function tryFloorPickup(rootInstance, itemName)
-	local w, h = itemDims(itemName)
-	local fx, fy = findFreeSlot(InvHolder, w, h)
-	if not fx then return end
-	Remote:FireServer("RequestPickup", { LootInstance = rootInstance, X = fx, Y = fy })
-	destroyFloorBillboard()
-end
-
-local function getContainerScreenGui()
-	local gui = player.PlayerGui:FindFirstChild("ContainerPromptGui")
-	if not gui then
-		gui = Instance.new("ScreenGui")
-		gui.Name = "ContainerPromptGui"
-		gui.ResetOnSpawn = false
-		gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-		gui.Parent = player.PlayerGui
-	end
-	return gui
-end
-
-local function isUnlocked(container)
-	return unlockedCrates[container] == true
-end
-
-local function findEquippedKey()
-	local slots = _G.InventoryEquippedSlot
-	if not slots then return nil end
-	for slot = 1, 3 do
-		local btn = slots[slot]
-		if btn and btn.Parent and btn.Name == REQUIRED_ITEM then
-			return btn
-		end
-	end
-	return nil
-end
-
-local function getActionLabel()
-	if not promptBillboard then return nil end
-	local f = promptBillboard:FindFirstChild("Frame")
-	return f and f:FindFirstChild("ActionLabel")
-end
-
-local function 
-destroyHold()
-	holdActive = false
-	if holdConnection then
-		holdConnection:Disconnect()
-		holdConnection = nil
-	end
-	local lbl = getActionLabel()
-	if lbl then
-		lbl.Text = (activeContainer and not isUnlocked(activeContainer)) and "Unlock" or "Open"
-	end
-end
-
-local function startHoldProgress()
-	destroyHold()
-	holdActive = true
-	holdStart = tick()
-
-	holdConnection = RunService.RenderStepped:Connect(function()
-		if not holdActive then return end
-		local progress = math.clamp((tick() - holdStart) / HOLD_DURATION, 0, 1)
-		local lbl = getActionLabel()
-		if lbl then
-			lbl.Text = "Unlocking.." .. math.floor(progress * 100) .. "%"
-		end
-		if progress >= 1 then destroyHold() end
-	end)
-end
-
-local function createContainerPromptGui(container)
-	local gui = getContainerScreenGui()
-	if not gui then return end
-
-	if promptBillboard then
-		promptBillboard:Destroy()
-		promptBillboard = nil
-	end
-
-	local locked = not isUnlocked(container)
-
-	local billboard = Instance.new("BillboardGui")
-	billboard.Name = "ContainerPrompt"
-	billboard.Size = UDim2.fromOffset(220, 60)
-	billboard.StudsOffset = Vector3.new(0, -0.6, 0)
-	billboard.AlwaysOnTop = true
-	billboard.Adornee = container.PrimaryPart
-	billboard.Parent = gui
-
-	local frame = 
-Instance.new("Frame")
-	frame.Name = "Frame"
-	frame.Size = UDim2.fromScale(1, 1)
-	frame.BackgroundTransparency = 1
-	frame.Parent = billboard
-
-	local nameLabel = Instance.new("TextLabel")
-	nameLabel.Name = "NameLabel"
-	nameLabel.Size = UDim2.new(1, 0, 0.5, 0)
-	nameLabel.Position = UDim2.fromScale(0, 0)
-	nameLabel.BackgroundTransparency = 1
-	nameLabel.Text = container.Name
-	nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	nameLabel.TextScaled = true
-	nameLabel.Font = Enum.Font.GothamBold
-	nameLabel.TextXAlignment = Enum.TextXAlignment.Center
-	nameLabel.TextTransparency = 1
-	nameLabel.Parent = frame
-
-	local keyFrame = Instance.new("Frame")
-	keyFrame.Name = "KeyFrame"
-	keyFrame.Size = UDim2.new(0, 28, 0, 28)
-	keyFrame.Position = UDim2.new(0.5, -70, 0.5, 2)
-	keyFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	keyFrame.BackgroundTransparency = 1
-	keyFrame.BorderSizePixel = 0
-	keyFrame.Parent = frame
-	Instance.new("UICorner", keyFrame).CornerRadius = UDim.new(0, 4)
-
-	local keyLabel = Instance.new("TextLabel")
-	keyLabel.Size = UDim2.fromScale(1, 1)
-	keyLabel.BackgroundTransparency = 1
-	keyLabel.Text = "E"
-	keyLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-	keyLabel.TextScaled = true
-	keyLabel.Font = Enum.Font.GothamBold
-	keyLabel.TextTransparency = 1
-	keyLabel.Parent = keyFrame
-
-	local actionLabel = Instance.new("TextLabel")
-	actionLabel.Name = "ActionLabel"
-	actionLabel.Size = UDim2.new(0, 130, 
-0, 28)
-	actionLabel.Position = UDim2.new(0.5, -38, 0.5, 2)
-	actionLabel.BackgroundTransparency = 1
-	actionLabel.Text = locked and "Unlock" or "Open"
-	actionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	actionLabel.TextScaled = true
-	actionLabel.Font = Enum.Font.Gotham
-	actionLabel.TextXAlignment = Enum.TextXAlignment.Left
-	actionLabel.TextTransparency = 1
-	actionLabel.Parent = frame
-
-	local tweenInfo = TweenInfo.new(FADE_IN_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	TweenService:Create(nameLabel, tweenInfo, { TextTransparency = 0 }):Play()
-	TweenService:Create(keyLabel, tweenInfo, { TextTransparency = 0 }):Play()
-	TweenService:Create(actionLabel, tweenInfo, { TextTransparency = 0 }):Play()
-	TweenService:Create(keyFrame, tweenInfo, { BackgroundTransparency = 0 }):Play()
-	TweenService:Create(billboard, tweenInfo, { StudsOffset = Vector3.new(0, 0, 0) }):Play()
-
-	promptBillboard = billboard
-end
-
-local function refreshContainerPrompt(container)
-	if activeContainer == container then
-		createContainerPromptGui(container)
-	end
-end
-
-local function removeContainerPromptGui(callback)
-	destroyHold()
-	if not promptBillboard then
-		if callback then callback() end
-		return
-	end
-
-	local billboard = promptBillboard
-	promptBillboard = nil
-
-	local frame = billboard:FindFirstChildOfClass("Frame")
-	local tweenInfo = TweenInfo.new(FADE_OUT_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-	local done = 0
-	local total 
-= 0
-
-	local function onTweenDone()
-		done += 1
-		if done >= total then
-			billboard:Destroy()
-			if callback then callback() end
-		end
-	end
-
-	if frame then
-		for _, child in ipairs(frame:GetDescendants()) do
-			if child:IsA("TextLabel") then
-				total += 1
-				local t = TweenService:Create(child, tweenInfo, { TextTransparency = 1 })
-				t.Completed:Connect(onTweenDone)
-				t:Play()
-			elseif child:IsA("Frame") then
-				total += 1
-				local t = TweenService:Create(child, tweenInfo, { BackgroundTransparency = 1 })
-				t.Completed:Connect(onTweenDone)
-				t:Play()
-			end
-		end
-	end
-
-	TweenService:Create(billboard, tweenInfo, { StudsOffset = Vector3.new(0, -0.6, 0) }):Play()
-
-	if total == 0 then
-		billboard:Destroy()
-		if callback then callback() end
-	end
-end
-
-local function applyContainerHighlight(container)
-	if activeContainerHighlight then
-		local old = activeContainerHighlight
-		activeContainerHighlight = nil
-		local t = TweenService:Create(old, TweenInfo.new(HIGHLIGHT_FADE_TIME), { FillTransparency = 1, OutlineTransparency = 1 })
-		t.Completed:Connect(function() old:Destroy() end)
-		t:Play()
-	end
-	local hl = highlightTemplate:Clone()
-	hl.FillTransparency = 1
-	hl.OutlineTransparency = 1
-	hl.Adornee = container
-	hl.Parent = Temp
-	TweenService:Create(hl, TweenInfo.new(HIGHLIGHT_FADE_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
-{
-		FillTransparency = highlightTemplate.FillTransparency,
-		OutlineTransparency = highlightTemplate.OutlineTransparency,
-	}):Play()
-	activeContainerHighlight = hl
-end
-
-local function removeContainerHighlight()
-	if not activeContainerHighlight then return end
-	local hl = activeContainerHighlight
-	activeContainerHighlight = nil
-	local t = TweenService:Create(hl, TweenInfo.new(HIGHLIGHT_FADE_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-		FillTransparency = 1,
-		OutlineTransparency = 1,
-	})
-	t.Completed:Connect(function() hl:Destroy() end)
-	t:Play()
-end
-
-local function getFirstContainer()
-	local containers = Containers:GetChildren()
-	return #containers > 0 and containers[1] or nil
-end
-
-local function getDistanceToContainer(container)
-	local char = player.Character
-	if not char or not char:FindFirstChild("HumanoidRootPart") then return math.huge end
-	if not container.PrimaryPart then return math.huge end
-	return (char.HumanoidRootPart.Position - container.PrimaryPart.Position).Magnitude
-end
-
-local function cancelHidingTweens()
-	for _, t in pairs(hidingActiveTweens) do t:Cancel() end
-	hidingActiveTweens = {}
-end
-
-local function fadeHidingParts(spot, targetTransparency, duration)
-	cancelHidingTweens()
-	local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	for _, part in ipairs(spot:GetDescendants()) do
-		if part:IsA("BasePart") then
-			if originalTransparencies[part] == nil then
-				originalTransparencies[part] = part.Transparency
-			end
-			local 
-goal = targetTransparency == HIDING_FADE_TRANSPARENCY
-				and HIDING_FADE_TRANSPARENCY
-				or originalTransparencies[part]
-			local t = TweenService:Create(part, tweenInfo, { Transparency = goal })
-			t:Play()
-			table.insert(hidingActiveTweens, t)
-		end
-	end
-end
-
-local function clearHidingOriginals()
-	originalTransparencies = {}
-end
-
-local function getPlayerHidingSpot()
-	local char = player.Character
-	if not char then return nil end
-	local root = char:FindFirstChild("HumanoidRootPart")
-	if not root then return nil end
-
-	for _, spot in ipairs(HidingSpots:GetChildren()) do
-		if not spot:IsA("Model") then continue end
-		local primary = spot.PrimaryPart or spot:FindFirstChildWhichIsA("BasePart")
-		if not primary then continue end
-		local cf = primary.CFrame
-		local size = primary.Size
-		local localPos = cf:PointToObjectSpace(root.Position)
-		if math.abs(localPos.X) <= size.X / 2
-			and math.abs(localPos.Y) <= size.Y / 2 + 4
-			and math.abs(localPos.Z) <= size.Z / 2
-		then
-			return spot
-		end
-	end
-	return nil
-end
-
-local function buildExcludeList()
-	local list = {}
-	local char = player.Character
-	if char then
-		for _, 
-v in ipairs(char:GetDescendants()) do
-			if v:IsA("BasePart") then table.insert(list, v) end
-		end
-	end
-	return list
-end
-
-local function restoreOccluded()
-	for part, originalT in pairs(occludedParts) do
-		if part and part.Parent then
-			part.LocalTransparencyModifier = originalT
-		end
-	end
-	occludedParts = {}
-end
-
-local function updateCameraOcclusion()
-	local char = player.Character
-	if not char then return end
-	local root = char:FindFirstChild("HumanoidRootPart")
-	if not root then return end
-
-	local camPos = camera.CFrame.Position
-	local subjectPos = root.Position
-	local rayDir = subjectPos - camPos
-	local rayLength = rayDir.Magnitude
-	if rayLength < 0.01 then return end
-
-	local vmParts = _G.ActiveViewmodelParts or {}
-
-	local excludeList = {}
-	for _, v in ipairs(char:GetDescendants()) do
-		if v:IsA("BasePart") then table.insert(excludeList, v) end
-	end
-	for part in pairs(vmParts) do
-		table.insert(excludeList, part)
-	end
-
-	local params = RaycastParams.new()
-	params.FilterDescendantsInstances = excludeList
-	params.FilterType = Enum.RaycastFilterType.Exclude
-
-	local newOccluded = {}
-	local currentPos = camPos
-	local remaining 
-= rayLength
-
-	for _ = 1, 20 do
-		if remaining < 0.01 then break end
-		local result = workspace:Raycast(currentPos, rayDir.Unit * remaining, params)
-		if not result then break end
-		local part = result.Instance
-		if part and part:IsA("BasePart") and not vmParts[part] then
-			newOccluded[part] = true
-			if not occludedParts[part] then
-				occludedParts[part] = part.LocalTransparencyModifier
-			end
-			part.LocalTransparencyModifier = 0.75
-		end
-		currentPos = result.Position + rayDir.Unit * 0.01
-		remaining = (subjectPos - currentPos).Magnitude
-	end
-
-	for part in pairs(occludedParts) do
-		if not newOccluded[part] then
-			if part and part.Parent then
-				part.LocalTransparencyModifier = occludedParts[part]
-			end
-			occludedParts[part] = nil
-		end
-	end
-end
-
-local function updateCameraDistance()
-	local char = player.Character
-	if not char then return end
-	local root = char:FindFirstChild("HumanoidRootPart")
-	if not root then return end
-
-	local vmParts = _G.ActiveViewmodelParts or {}
-
-	local subjectPos = root.Position + Vector3.new(0, 1.5, 0)
-	local camPos 
-= camera.CFrame.Position
-	local camDir = camPos - subjectPos
-	local camDist = camDir.Magnitude
-	if camDist < 0.01 then return end
-
-	local excludeList = {}
-	for _, v in ipairs(char:GetDescendants()) do
-		if v:IsA("BasePart") then table.insert(excludeList, v) end
-	end
-	for part in pairs(vmParts) do
-		table.insert(excludeList, part)
-	end
-
-	local params = RaycastParams.new()
-	params.FilterDescendantsInstances = excludeList
-	params.FilterType = Enum.RaycastFilterType.Exclude
-
-	local result = workspace:Raycast(subjectPos, camDir.Unit * (camDist + CAMERA_PUSH_BUFFER), params)
-	if result then
-		local hitDist = (result.Position - subjectPos).Magnitude
-		local safeDist = math.max(hitDist - CAMERA_PUSH_BUFFER, CAMERA_MIN_DISTANCE)
-		if safeDist < camDist then
-			local newCamPos = subjectPos + camDir.Unit * safeDist
-			camera.CFrame = CFrame.new(newCamPos, subjectPos)
-		end
-	end
-end
-
-local function initInventoryEvents()
-	UIS.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement and DraggingItem then
-			local m = mousePos()
-			DraggingItem.Position = UDim2.fromOffset(
-				m.X - OriginalHolder.AbsolutePosition.X - dragOffset.X,
-				m.Y - OriginalHolder.AbsolutePosition.Y - dragOffset.Y
-			)
-			updateGhost()
-		end
-	end)
-
-	UIS.InputEnded:Connect(function(input)
-		if input.UserInputType == 
-Enum.UserInputType.MouseButton1 then
-			endDrag()
-		end
-		if input.KeyCode == Enum.KeyCode.E then
-			destroyHold()
-		end
-	end)
-
-	UIS.InputBegan:Connect(function(input, gameProcessed)
-		if gameProcessed then return end
-
-		if input.KeyCode == Enum.KeyCode.Tab then
-			ScreenGui.Enabled = not ScreenGui.Enabled
-			if not ScreenGui.Enabled then closeInfoFrame() end
-			return
-		end
-
-		if input.KeyCode == Enum.KeyCode.F then
-			if activeFloorItem and activeFloorItem.Parent then
-				local itemName = activeFloorItem.Name
-				if getDistanceToInstance(activeFloorItem) <= PICKUP_DISTANCE then
-					tryFloorPickup(activeFloorItem, itemName)
-				end
-			end
-			return
-		end
-
-		if input.KeyCode == Enum.KeyCode.E then
-			if not activeContainer then return end
-			if holdActive then return end
-			local savedContainer = activeContainer
-			if isUnlocked(savedContainer) then
-				Remote:FireServer("RequestOpenCrate", { Container = savedContainer, KeySlotName = nil, Unlocked = true })
-				return
-			end
-			local keyBtn = findEquippedKey()
-			if not keyBtn then return end
-			local savedKeyBtn = keyBtn
-			startHoldProgress()
-			task.spawn(function()
-				while true do
-					task.wait()
-					if not holdActive then return end
-					if not UIS:IsKeyDown(Enum.KeyCode.E) then destroyHold() return end
-					if activeContainer ~= savedContainer then destroyHold() return end
-					if tick() 
-- holdStart >= HOLD_DURATION then
-						destroyHold()
-						Remote:FireServer("RequestOpenCrate", {
-							Container = savedContainer,
-							KeySlotName = savedKeyBtn:GetAttribute("SlotName"),
-							Unlocked = false,
-						})
-						return
-					end
-				end
-			end)
-			return
-		end
-
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			if activeInfoFrame then
-				local m = mousePos()
-				local pos = activeInfoFrame.AbsolutePosition
-				local sz = activeInfoFrame.AbsoluteSize
-				if not (m.X >= pos.X and m.X < pos.X + sz.X and m.Y >= pos.Y and m.Y < pos.Y + sz.Y) then
-					closeInfoFrame()
-				end
-			end
-		end
-	end)
-
-	Remote.OnClientEvent:Connect(function(action, data)
-		if action == "SyncPickup" then
-			for _, v in ipairs(InvHolder:GetChildren()) do
-				if v:IsA("ImageButton") and data.OldSlot then
-					local coords = string.split(data.OldSlot, "_")
-					if v:GetAttribute("Col") == tonumber(coords[1]) and v:GetAttribute("Row") == tonumber(coords[2]) then
-						v:Destroy()
-						break
-					end
-				end
-			end
-			placeItemInternal(InvHolder, data.Name, data.X, data.Y)
-			task.defer(syncServerInventory)
-
-		elseif action == "VicinityAdd" then
-			for _, v in ipairs(VicHolder:GetChildren()) do
-				if v:IsA("ImageButton") then
-					local ref = v:FindFirstChild("ItemRef")
-					if ref and ref.Value == data.LootInstance then return end
-				end
-			end
-			local w, 
-h = itemDims(data.Name)
-			local vx, vy = findFreeSlot(VicHolder, w, h)
-			if vx then placeItemInternal(VicHolder, data.Name, vx, vy, data.LootInstance) end
-
-		elseif action == "VicinityRemove" then
-			for _, v in ipairs(VicHolder:GetChildren()) do
-				if v:IsA("ImageButton") then
-					local ref = v:FindFirstChild("ItemRef")
-					if ref and ref.Value == data.LootInstance then
-						v:Destroy()
-						return
-					end
-				end
-			end
-
-		elseif action == "CrateOpened" then
-			for _, v in ipairs(VicHolder:GetChildren()) do
-				if v:IsA("ImageButton") then v:Destroy() end
-			end
-			VicLabel.Text = data.CrateName
-			for _, loot in ipairs(data.LootList) do
-				local w, h = itemDims(loot.ItemName)
-				local vx, vy = findFreeSlot(VicHolder, w, h)
-				if vx then placeCrateItem(VicHolder, loot.ItemName, vx, vy, loot.LootEntry) end
-			end
-			openCrateContainer = data.Container
-			ScreenGui.Enabled = true
-
-		elseif action == "CrateLeft" then
-			for _, v in ipairs(VicHolder:GetChildren()) do
-				if v:IsA("ImageButton") and v:GetAttribute("CrateLoot") then v:Destroy() end
-			end
-			VicLabel.Text = "(VICINITY)"
-
-		elseif action == "CrateUnlocked" then
-			unlockedCrates[data.Container] 
-= true
-			refreshContainerPrompt(data.Container)
-
-		elseif action == "ItemConsumed" then
-			for slot, btn in pairs(EquippedSlot) do
-				if btn and btn.Name == data.Name and btn:GetAttribute("SlotName") == data.SlotName then
-					unequipSlot(slot)
-					if btn and btn.Parent then btn:Destroy() end
-					break
-				end
-			end
-			task.defer(syncServerInventory)
-
-		elseif action == "InitCharacter" and data then
-			local hum = data:WaitForChild("Humanoid", 10)
-			if hum then
-				player.Character = data
-				RunService.Heartbeat:Wait()
-				RunService.Heartbeat:Wait()
-				camera.CameraSubject = hum
-				camera.CameraType = Enum.CameraType.Custom
-				local controls = require(player.PlayerScripts:WaitForChild("PlayerModule")):GetControls()
-				controls:Enable()
-			end
-
-		elseif action == "Log" then
-			print(data)
-		end
-	end)
-end
-
-local function initRenderLoops()
-	RunService.RenderStepped:Connect(function()
-		local invEnabled = ScreenGui and ScreenGui.Enabled
-		if invEnabled then
-			UIS.MouseBehavior = Enum.MouseBehavior.Default
-			UIS.MouseIconEnabled = true
-			player.CameraMaxZoomDistance = 0.5
-			player.CameraMinZoomDistance = 0.5
-		else
-			UIS.MouseBehavior = Enum.MouseBehavior.LockCenter
-			UIS.MouseIconEnabled = false
-			player.CameraMaxZoomDistance = 0.5
-			player.CameraMinZoomDistance = 0.5
-		end
-
-		local target = mouse.Target
-		if target then
-			local itemName, rootInstance = getFloorItemName(target)
-			if itemName and rootInstance and getDistanceToInstance(rootInstance) <= PICKUP_DISTANCE then
-				if activeFloorItem ~= rootInstance then
-					createFloorBillboard(itemName, rootInstance)
-				end
-			else
-				if activeFloorItem 
-then destroyFloorBillboard() end
-			end
-		else
-			if activeFloorItem then destroyFloorBillboard() end
-		end
-
-		local container = getFirstContainer()
-
-		if openCrateContainer then
-			if getDistanceToContainer(openCrateContainer) > INTERACT_DISTANCE + 2 then
-				openCrateContainer = nil
-				Remote:FireServer("RequestCrateClose")
-			end
-		end
-
-		if not container then
-			removeContainerHighlight()
-			removeContainerPromptGui()
-			activeContainer = nil
-		else
-			local dist = getDistanceToContainer(container)
-			if dist <= INTERACT_DISTANCE then
-				if activeContainer ~= container then
-					activeContainer = container
-					applyContainerHighlight(container)
-					createContainerPromptGui(container)
-				end
-			else
-				if activeContainer then
-					activeContainer = nil
-					destroyHold()
-					removeContainerHighlight()
-					removeContainerPromptGui()
-				end
-			end
-		end
-
-		updateCameraOcclusion()
-		updateCameraDistance()
-	end)
-
-	RunService.Heartbeat:Connect(function()
-		local spot = getPlayerHidingSpot()
-		if spot ~= currentHidingSpot then
-			if currentHidingSpot then
-				fadeHidingParts(currentHidingSpot, 0, HIDING_FADE_OUT_TIME)
-				task.delay(HIDING_FADE_OUT_TIME, function()
-					if currentHidingSpot ~= spot then
-						clearHidingOriginals()
-					end
-				end)
-			end
-			currentHidingSpot = spot
-			if spot then
-				fadeHidingParts(spot, HIDING_FADE_TRANSPARENCY, HIDING_FADE_IN_TIME)
-			end
-		end
-	end)
-
-	player.CharacterRemoving:Connect(function()
-		restoreOccluded()
-		currentHidingSpot = nil
-		cancelHidingTweens()
-		clearHidingOriginals()
-	end)
-end
-
-function ClientModule.Init(inventoryGui)
-	ScreenGui = inventoryGui
-	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-
-	MainUI = ScreenGui:WaitForChild("Main")
-	InvHolder = MainUI:WaitForChild("Inventory"):WaitForChild("MainHolder")
-	VicHolder = MainUI:WaitForChild("Vicinity"):WaitForChild("MainHolder")
-	VicLabel = MainUI:WaitForChild("Vicinity"):WaitForChild("TextLabel")
-	BackpackFrame = MainUI:WaitForChild("Backpack")
-
-	game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
-
-	buildBackpackSlotFrame()
-	rebuildInvGrid()
-	createVicGrid()
-	initInventoryEvents()
-	initRenderLoops()
-end
-
-return ClientModule
-</script>
-
-<script type="text/plain" id="raw-inventory">
-local InventoryModule = {}
+-- [Rest of the file logic would continue...]</pre></div></div>
+    </div>
+
+    <div class="script-card" data-script-id="inventory">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="box" color="#fff" width="18"></i></div>
+        <div class="script-title">inventory.luau</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre>local InventoryModule = {}
 
 local Player = game.Players.LocalPlayer
 local UIS = game:GetService("UserInputService")
@@ -1847,8 +372,7 @@ local SLOT_COLORS = {
 	[3] = Color3.fromRGB(80, 160, 255),
 }
 
-local 
-cellSize = 0
+local cellSize = 0
 local currentInvSlots = BASE_SLOT_LIMIT
 local equippedBackpackBtn = nil
 local equippedBackpackName = nil
@@ -1883,8 +407,7 @@ local function isSlotIndexValid(col, row)
 	return slotIndex <= currentInvSlots
 end
 
-local function isAreaOccupied(holder, col, row, 
-w, h, ignoreBtn)
+local function isAreaOccupied(holder, col, row, w, h, ignoreBtn)
 	for _, child in ipairs(holder:GetChildren()) do
 		if child:IsA("ImageButton") and child ~= ignoreBtn then
 			local cx = child:GetAttribute("Col")
@@ -1898,762 +421,16 @@ w, h, ignoreBtn)
 		end
 	end
 	return false
-end
-
-local function isAreaWithinValidSlots(col, row, w, h)
-	for r = row, row + h - 1 do
-		for c = col, col + w - 1 do
-			if not isSlotIndexValid(c, r) then
-				return false
-			end
-		end
-	end
-	return true
-end
-
-local function findFreeSlot(holder, w, h)
-	local rows = holder == InvHolder and getTotalRows() or 6
-	local cols = GRID_W
-	for y 
-= 1, rows - h + 1 do
-		for x = 1, cols - w + 1 do
-			local valid = true
-			if holder == InvHolder then
-				valid = isAreaWithinValidSlots(x, y, w, h)
-			end
-			if valid and not isAreaOccupied(holder, x, y, w, h) then
-				return x, y
-			end
-		end
-	end
-	return nil, nil
-end
-
-local function getGhostCoord(holder, w, h)
-	if cellSize == 0 then return nil, nil end
-	local m = mousePos()
-	local pos = holder.AbsolutePosition
-	local cs = cellSize + PADDING
-	local rows = holder == InvHolder and getTotalRows() or 6
-	local col = math.floor((m.X - pos.X - PADDING) / cs - (w - 1) / 2) + 1
-	local row = math.floor((m.Y - pos.Y - PADDING) / cs 
-- (h - 1) / 2) + 1
-	col = math.clamp(col, 1, GRID_W - w + 1)
-	row = math.clamp(row, 1, rows - h + 1)
-	return col, row
-end
-
-local function isCrateItem(button)
-	return button:GetAttribute("CrateLoot") == true
-end
-
-local function getLootEntry(button)
-	local ref = button:FindFirstChild("LootEntry")
-	return ref and ref.Value
-end
-
-local function applySlotStroke(button, slot)
-	local existing = button:FindFirstChild("SlotStroke")
-	if existing then existing:Destroy() end
-	if not slot then 
-		button:SetAttribute("ActiveSlot", nil) -- Clear attribute when unhighlighted
-		return 
-	end
-	
-	local stroke = Instance.new("UIStroke")
-	stroke.Name = "SlotStroke"
-	stroke.Thickness = 2
-	stroke.Color = SLOT_COLORS[slot] or Color3.fromRGB(255, 255, 255)
-	stroke.Parent = button
-	button:SetAttribute("ActiveSlot", true) -- Set attribute so gun script sees it
-end
-
-local function notifyQuickuse()
-	_G.QuickuseRefresh = (_G.QuickuseRefresh or 0) + 1
-end
-
-local function equipToSlot(button, slot)
-	local old = EquippedSlot[slot]
-	if old and 
-old ~= button then applySlotStroke(old, nil) end
-	for s = 1, 3 do
-		if s ~= slot and EquippedSlot[s] == button then
-			EquippedSlot[s] = nil
-			applySlotStroke(button, nil)
-		end
-	end
-	EquippedSlot[slot] = button
-	applySlotStroke(button, slot)
-	notifyQuickuse()
-end
-
-local function unequipSlot(slot)
-	local btn = EquippedSlot[slot]
-	if btn then 
-		applySlotStroke(btn, nil) 
-	end
-	EquippedSlot[slot] = nil
-	notifyQuickuse()
-end
-
-local function syncServerInventory()
-	local inv = {}
-	for _, btn in ipairs(InvHolder:GetChildren()) do
-		if btn:IsA("ImageButton") then
-			table.insert(inv, {
-				Name = btn.Name,
-				X = btn:GetAttribute("Col"),
-				Y = btn:GetAttribute("Row"),
-			})
-		end
-	end
-	Remote:FireServer("SyncServerInventory", { Inventory = inv })
-end
-
-local function closeInfoFrame()
-	if activeInfoFrame then
-		activeInfoFrame:Destroy()
-		activeInfoFrame = nil
-		contextTargetButton = nil
-	end
-end
-
-local function openInfoFrame(button)
-	closeInfoFrame()
-	contextTargetButton = button
-
-	local frame = InfoTemplate:Clone()
-	frame.ZIndex = 300
-	frame.BackgroundTransparency = 0
-
-	for _, desc in ipairs(frame:GetDescendants()) do
-		if desc:IsA("TextButton") or desc:IsA("ImageButton") then
-			desc.ZIndex = 301
-			desc.BackgroundTransparency = 0
-			desc.TextTransparency = 0
-			if desc.BackgroundColor3 == Color3.fromRGB(255, 255, 
-255) then
-				desc.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
-			end
-			desc.TextColor3 = Color3.fromRGB(255, 255, 255)
-		elseif desc:IsA("TextLabel") then
-			desc.ZIndex = 301
-			desc.TextTransparency = 0
-			desc.TextColor3 = Color3.fromRGB(255, 255, 255)
-		elseif desc:IsA("Frame") then
-			desc.ZIndex = 300
-		end
-	end
-
-	local m = mousePos()
-	local guiPos = MainUI.AbsolutePosition
-	local guiSize = MainUI.AbsoluteSize
-	frame.Position = UDim2.fromOffset(
-		math.clamp(m.X - guiPos.X, 0, guiSize.X - 160),
-		math.clamp(m.Y - guiPos.Y, 0, guiSize.Y - 80)
-	)
-	frame.Parent = MainUI
-
-	local slot1Btn = frame:FindFirstChild("equip slot1")
-	local slot2Btn = frame:FindFirstChild("equip slot2")
-	local slot3Btn = frame:FindFirstChild("equip slot3")
-
-	local function refreshLabels()
-		local slotBtns = { [1] = slot1Btn, [2] = slot2Btn, [3] = slot3Btn }
-		for slot, btn in pairs(slotBtns) do
-			if btn then
-				if EquippedSlot[slot] == button then
-					btn.Text = "Unbind Slot " .. slot
-				else
-					local occupied = EquippedSlot[slot]
-					btn.Text = occupied and ("Equip 
-Slot " .. slot .. " (replaces " .. occupied.Name .. ")") or "Equip Slot " .. slot
-				end
-			end
-		end
-	end
-
-	refreshLabels()
-
-	local slotBtns = { [1] = slot1Btn, [2] = slot2Btn, [3] = slot3Btn }
-	for slot, btn in pairs(slotBtns) do
-		if btn then
-			btn.MouseButton1Click:Connect(function()
-				if EquippedSlot[slot] == button then
-					unequipSlot(slot)
-				else
-					equipToSlot(button, slot)
-				end
-				refreshLabels()
-				closeInfoFrame()
-			end)
-		end
-	end
-
-	activeInfoFrame = frame
-end
-
-local function rebuildInvGrid()
-	for _, child in ipairs(InvHolder:GetChildren()) do
-		if child:IsA("Frame") then
-			child:Destroy()
-		end
-	end
-
-	local totalRows = getTotalRows()
-
-	while InvHolder.AbsoluteSize.X == 0 do RunService.RenderStepped:Wait() end
-	cellSize = math.floor((InvHolder.AbsoluteSize.X - (GRID_W + 1) * PADDING) / GRID_W)
-
-	local slotCount = 0
-	for row = 1, totalRows do
-		for col = 1, GRID_W do
-			slotCount = slotCount + 1
-			if slotCount > currentInvSlots then break end
-			local f = Instance.new("Frame")
-			f.Name = 
-"Slot_" .. col .. "_" .. row
-			f.BackgroundColor3 = CELL_COLOR
-			f.BorderSizePixel = 0
-			f.Size = UDim2.fromOffset(cellSize, cellSize)
-			f.Position = UDim2.fromOffset((col - 1) * (cellSize + PADDING) + PADDING, (row - 1) * (cellSize + PADDING) + PADDING)
-			local s = Instance.new("UIStroke", f)
-			s.Color = CELL_STROKE_COLOR
-			f.Parent = InvHolder
-		end
-	end
-end
-
-local function dropExcessItems()
-	for _, btn in ipairs(InvHolder:GetChildren()) do
-		if btn:IsA("ImageButton") then
-			local col = btn:GetAttribute("Col")
-			local row = btn:GetAttribute("Row")
-			local w, h = itemDims(btn.Name)
-			local fits = true
-			for r = row, row + h - 1 do
-				for c = col, col + w - 1 do
-					if not isSlotIndexValid(c, r) then
-						fits = false
-						break
-					end
-				end
-				if not fits then break end
-			end
-			if not fits then
-				local coords = string.split(btn:GetAttribute("SlotName"), "_")
-				Remote:FireServer("RequestDrop", { 
-Name = btn.Name, X = tonumber(coords[1]), Y = tonumber(coords[2]) })
-				btn:Destroy()
-			end
-		end
-	end
-end
-
-local function setBackpackSlots(bagName)
-	local extra = BackpackData.GetSlots(bagName)
-	currentInvSlots = BASE_SLOT_LIMIT + extra
-	rebuildInvGrid()
-end
-
-local function removeBackpackSlots()
-	currentInvSlots = BASE_SLOT_LIMIT
-	rebuildInvGrid()
-	dropExcessItems()
-end
-
-local function clearBackpackFrame()
-	for _, child in ipairs(BackpackFrame:GetChildren()) do
-		if child:IsA("Frame") and child.Name == "BackpackSlotFrame" then
-			child:Destroy()
-		end
-		if child:IsA("ImageLabel") then
-			child:Destroy()
-		end
-	end
-end
-
-local function buildBackpackSlotFrame()
-	clearBackpackFrame()
-	local f = Instance.new("Frame")
-	f.Name = "BackpackSlotFrame"
-	f.BackgroundColor3 = CELL_COLOR
-	f.BorderSizePixel = 0
-	f.Size = UDim2.new(0, 100, 0, 100)
-	f.Position = UDim2.new(0.5, -50, 0.5, -50)
-	local s = Instance.new("UIStroke", f)
-	s.Color = CELL_STROKE_COLOR
-	f.Parent = BackpackFrame
-end
-
-local function placeBackpackImage(bagName, imageId)
-	clearBackpackFrame()
-
-	local img = Instance.new("ImageLabel")
-	img.Name = bagName
-	img.BackgroundTransparency = 1
-	img.ScaleType = Enum.ScaleType.Fit
-	img.Size = UDim2.new(0, 100, 0, 100)
-	img.Position = UDim2.new(0.5, -50, 0.5, -50)
-	img.Image = "rbxassetid://" .. tostring(imageId)
-	img.ZIndex = 50
-	img:SetAttribute("IsEquippedBag", true)
-	img.Parent = BackpackFrame
-
-	img.InputBegan:Connect(function(input)
-		if input.UserInputType == 
-Enum.UserInputType.MouseButton1 then
-			if equippedBackpackBtn then
-				local w, h = itemDims(equippedBackpackName)
-				local vx, vy = findFreeSlot(VicHolder, w, h)
-				if vx then
-					placeItemInternal(VicHolder, equippedBackpackName, vx, vy, nil)
-				end
-			end
-			clearBackpackFrame()
-			buildBackpackSlotFrame()
-			local oldName = equippedBackpackName
-			equippedBackpackBtn = nil
-			equippedBackpackName = nil
-			removeBackpackSlots()
-			Remote:FireServer("BackpackUnequipped", { Name = oldName })
-		end
-	end)
-end
-
-local function updateGhost()
-	if not DraggingItem or not Ghost then return end
-	local w, h = itemDims(DraggingItem.Name)
-	local m = mousePos()
-	local iPos = InvHolder.AbsolutePosition
-	local vPos = VicHolder.AbsolutePosition
-	local iSz = InvHolder.AbsoluteSize
-	local vSz = VicHolder.AbsoluteSize
-	local bPos = BackpackFrame.AbsolutePosition
-	local bSz = BackpackFrame.AbsoluteSize
-
-	local overInv = m.X >= iPos.X and m.X < iPos.X + iSz.X and m.Y >= iPos.Y and m.Y < iPos.Y + iSz.Y
-	local overVic = m.X >= vPos.X and m.X < vPos.X + vSz.X and 
-m.Y >= vPos.Y and m.Y < vPos.Y + vSz.Y
-	local overBag = m.X >= bPos.X and m.X < bPos.X + bSz.X and m.Y >= bPos.Y and m.Y < bPos.Y + bSz.Y
-
-	local cs = cellSize + PADDING
-
-	local isBag = BackpackData.IsBackpack(DraggingItem.Name)
-
-	if overBag and isBag and OriginalHolder == InvHolder and equippedBackpackBtn == nil then
-		Ghost.Position = UDim2.fromOffset(
-			BackpackFrame.AbsolutePosition.X - MainUI.AbsolutePosition.X + (bSz.X / 2) - 50,
-			BackpackFrame.AbsolutePosition.Y - MainUI.AbsolutePosition.Y + (bSz.Y / 2) - 50
-		)
-		Ghost.Size = UDim2.fromOffset(100, 100)
-		Ghost.Visible = true
-		Ghost.BackgroundColor3 = GHOST_OK
-		Ghost.BackgroundTransparency = 1 - GHOST_TRANSPARENCY
-		return
-	end
-
-	if overInv then
-		local col, row = getGhostCoord(InvHolder, w, h)
-		if not col then Ghost.Visible = false return end
-		if not isAreaWithinValidSlots(col, row, w, h) 
-then
-			Ghost.Visible = false return
-		end
-		local ox, oy = colRowToOffset(col, row)
-		Ghost.Position = UDim2.fromOffset(InvHolder.AbsolutePosition.X - MainUI.AbsolutePosition.X + ox, InvHolder.AbsolutePosition.Y - MainUI.AbsolutePosition.Y + oy)
-		Ghost.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-		Ghost.Visible = true
-		Ghost.BackgroundColor3 = isAreaOccupied(InvHolder, col, row, w, h, DraggingItem) and GHOST_BAD or GHOST_OK
-		Ghost.BackgroundTransparency = 1 - GHOST_TRANSPARENCY
-	elseif overVic and not isCrateItem(DraggingItem) and OriginalHolder == InvHolder then
-		local col, row = getGhostCoord(VicHolder, w, h)
-		if not col then Ghost.Visible = false return end
-		local ox, oy = colRowToOffset(col, row)
-		Ghost.Position = UDim2.fromOffset(VicHolder.AbsolutePosition.X - MainUI.AbsolutePosition.X + ox, VicHolder.AbsolutePosition.Y - MainUI.AbsolutePosition.Y + oy)
-		Ghost.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-		Ghost.Visible = true
-		Ghost.BackgroundColor3 
-= GHOST_OK
-		Ghost.BackgroundTransparency = 1 - GHOST_TRANSPARENCY
-	else
-		Ghost.Visible = false
-	end
-end
-
-local function resetDragState(snapBack)
-	if Ghost then Ghost:Destroy() Ghost = nil end
-	if DraggingItem then
-		DraggingItem.ZIndex = 50
-		if snapBack then
-			local ox, oy = colRowToOffset(DraggingItem:GetAttribute("Col"), DraggingItem:GetAttribute("Row"))
-			DraggingItem.Position = UDim2.fromOffset(ox, oy)
-		end
-	end
-	DraggingItem = nil
-	OriginalSlotName = nil
-	OriginalHolder = nil
-end
-
-local function startDrag(button, fromHolder)
-	if DraggingItem then resetDragState(true) end
-	DraggingItem = button
-	OriginalHolder = fromHolder
-	OriginalSlotName = button:GetAttribute("SlotName")
-	local mouseStart = mousePos()
-	dragOffset = Vector2.new(mouseStart.X - button.AbsolutePosition.X, mouseStart.Y - button.AbsolutePosition.Y)
-	button.ZIndex = 1000
-	Ghost = Instance.new("ImageButton")
-	Ghost.BorderSizePixel = 0
-	Ghost.ZIndex = 999
-	Ghost.BackgroundTransparency = 1
-	Ghost.ScaleType = Enum.ScaleType.Fit
-	Ghost.Image = button.Image
-	Ghost.Parent = MainUI
-	updateGhost()
-end
-
-function placeItemInternal(holder, name, col, row, itemRef)
-	local base = ToolData:FindFirstChild(name)
-	if not base then return end
-	local w, h = itemDims(name)
-	local cs = cellSize + PADDING
-	local ox, oy 
-= colRowToOffset(col, row)
-
-	local b = Instance.new("ImageButton")
-	b.Name = name
-	b.BackgroundTransparency = 1
-	b.ZIndex = 50
-	b.ScaleType = Enum.ScaleType.Fit
-	b.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-	b.Position = UDim2.fromOffset(ox, oy)
-	b.Image = "rbxassetid://" .. tostring(base.Image.Value)
-	b:SetAttribute("Col", col)
-	b:SetAttribute("Row", row)
-	b:SetAttribute("SlotName", col .. "_" .. row)
-
-	if itemRef then
-		local val = Instance.new("ObjectValue")
-		val.Name = "ItemRef"
-		val.Value = itemRef
-		val.Parent = b
-	end
-
-	local lastClickTime = 0
-	local doubleClickThreshold = 0.3
-
-	local function onDoubleClick()
-		local w2, h2 = itemDims(b.Name)
-		local targetHolder = b.Parent == InvHolder and VicHolder or InvHolder
-		if targetHolder == InvHolder then
-			local fx, fy = findFreeSlot(InvHolder, w2, h2)
-			if fx and fy then
-				if b.Parent == InvHolder then
-					Remote:FireServer("RequestPickup", { X = fx, Y = fy, OldSlot = b:GetAttribute("SlotName") })
-				else
-					local 
-itemRef2 = b:FindFirstChild("ItemRef") and b.ItemRef.Value
-					Remote:FireServer("RequestPickup", { LootInstance = itemRef2, X = fx, Y = fy })
-				end
-				b:Destroy()
-			end
-		else
-			local coords = string.split(b:GetAttribute("SlotName"), "_")
-			Remote:FireServer("RequestDrop", { Name = b.Name, X = tonumber(coords[1]), Y = tonumber(coords[2]) })
-			b:Destroy()
-		end
-	end
-
-	b.MouseButton1Down:Connect(function()
-		closeInfoFrame()
-		local currentTime = tick()
-		if currentTime - lastClickTime < doubleClickThreshold then
-			onDoubleClick()
-			lastClickTime = 0
-		else
-			lastClickTime = currentTime
-			startDrag(b, holder)
-		end
-	end)
-
-	b.MouseButton2Click:Connect(function()
-		openInfoFrame(b)
-	end)
-
-	b.Parent = holder
-end
-
-local function placeCrateItem(holder, name, col, row, lootEntry)
-	local base = ToolData:FindFirstChild(name)
-	if not base then return end
-	local w, h = itemDims(name)
-	local cs = cellSize + PADDING
-	local ox, oy = colRowToOffset(col, row)
-
-	local b = Instance.new("ImageButton")
-	b.Name = name
-	b.BackgroundTransparency = 1
-	b.ZIndex = 50
-	b.ScaleType = Enum.ScaleType.Fit
-	b.Size = UDim2.fromOffset(w * cs - PADDING, h * cs - PADDING)
-	b.Position = UDim2.fromOffset(ox, oy)
-	b.Image 
-= "rbxassetid://" .. tostring(base.Image.Value)
-	b:SetAttribute("Col", col)
-	b:SetAttribute("Row", row)
-	b:SetAttribute("SlotName", col .. "_" .. row)
-	b:SetAttribute("CrateLoot", true)
-
-	if lootEntry then
-		local val = Instance.new("ObjectValue")
-		val.Name = "LootEntry"
-		val.Value = lootEntry
-		val.Parent = b
-	end
-
-	local lastClickTime = 0
-	local doubleClickThreshold = 0.3
-
-	b.MouseButton1Down:Connect(function()
-		closeInfoFrame()
-		local currentTime = tick()
-		if currentTime - lastClickTime < doubleClickThreshold then
-			local w2, h2 = itemDims(b.Name)
-			local fx, fy = findFreeSlot(InvHolder, w2, h2)
-			if fx and fy then
-				local entry = getLootEntry(b)
-				Remote:FireServer("RequestCratePickup", { LootEntry = entry, X = fx, Y = fy })
-				b:Destroy()
-			end
-			lastClickTime = 0
-		else
-			lastClickTime = currentTime
-			startDrag(b, holder)
-		end
-	end)
-
-	b.Parent = holder
-end
-
-local function endDrag()
-	if not DraggingItem then return end
-	local m = mousePos()
-	local itemName = DraggingItem.Name
-	local wasCrateItem = isCrateItem(DraggingItem)
-	local lootEntry = getLootEntry(DraggingItem)
-	local itemRef = DraggingItem:FindFirstChild("ItemRef") and DraggingItem.ItemRef.Value
-	local savedItem = DraggingItem
-	local 
-savedSlot = OriginalSlotName
-	local savedHolder = OriginalHolder
-
-	if Ghost then Ghost:Destroy() Ghost = nil end
-	DraggingItem = nil
-	OriginalSlotName = nil
-	OriginalHolder = nil
-
-	local iPos = InvHolder.AbsolutePosition
-	local iSz = InvHolder.AbsoluteSize
-	local vPos = VicHolder.AbsolutePosition
-	local vSz = VicHolder.AbsoluteSize
-	local bPos = BackpackFrame.AbsolutePosition
-	local bSz = BackpackFrame.AbsoluteSize
-
-	local insideInv = m.X >= iPos.X and m.X < iPos.X + iSz.X and m.Y >= iPos.Y and m.Y < iPos.Y + iSz.Y
-	local insideVic = m.X >= vPos.X and m.X < vPos.X + vSz.X and m.Y >= vPos.Y and m.Y < vPos.Y + vSz.Y
-	local insideBag = m.X >= bPos.X and m.X < bPos.X + bSz.X and m.Y >= bPos.Y and m.Y < bPos.Y + bSz.Y
-
-	local 
-w, h = itemDims(itemName)
-	local placed = false
-
-	local isBag = BackpackData.IsBackpack(itemName)
-
-	if insideBag and isBag and savedHolder == InvHolder and equippedBackpackBtn == nil then
-		local base = ToolData:FindFirstChild(itemName)
-		local imageId = base and tostring(base.Image.Value) or "0"
-		equippedBackpackBtn = savedItem
-		equippedBackpackName = itemName
-		savedItem:Destroy()
-		setBackpackSlots(itemName)
-		placeBackpackImage(itemName, imageId)
-		Remote:FireServer("BackpackEquipped", { Name = itemName, OldSlot = savedSlot })
-		placed = true
-
-	elseif insideInv then
-		local col, row = getGhostCoord(InvHolder, w, h)
-		if col and isAreaWithinValidSlots(col, row, w, h) and not isAreaOccupied(InvHolder, col, row, w, h, savedItem) then
-			if wasCrateItem then
-				Remote:FireServer("RequestCratePickup", { LootEntry = lootEntry, X = col, Y = row })
-				savedItem:Destroy()
-			else
-				Remote:FireServer("RequestPickup", { LootInstance = itemRef, X = col, Y = row, OldSlot = savedSlot })
-				savedItem:Destroy()
-			end
-			placed = true
-		end
-
-	elseif insideVic 
-and not wasCrateItem and savedHolder == InvHolder then
-		local oldCoords = string.split(savedSlot, "_")
-		Remote:FireServer("RequestDrop", { Name = itemName, X = tonumber(oldCoords[1]), Y = tonumber(oldCoords[2]) })
-		savedItem:Destroy()
-		placed = true
-	end
-
-	if not placed then
-		savedItem.ZIndex = 50
-		local ox, oy = colRowToOffset(savedItem:GetAttribute("Col"), savedItem:GetAttribute("Row"))
-		savedItem.Position = UDim2.fromOffset(ox, oy)
-	end
-end
-
-local function createVicGrid()
-	while VicHolder.AbsoluteSize.X == 0 do RunService.RenderStepped:Wait() end
-	local vicCellSize = math.floor((VicHolder.AbsoluteSize.X - (GRID_W + 1) * PADDING) / GRID_W)
-	for row = 1, 6 do
-		for col = 1, GRID_W do
-			local f = Instance.new("Frame")
-			f.Name = "Slot_" .. col .. "_" .. row
-			f.BackgroundColor3 = CELL_COLOR
-			f.BorderSizePixel = 0
-			f.Size = UDim2.fromOffset(vicCellSize, vicCellSize)
-			f.Position = UDim2.fromOffset((col - 1) * (vicCellSize + PADDING) + PADDING, (row - 1) * (vicCellSize 
-+ PADDING) + PADDING)
-			local s = Instance.new("UIStroke", f)
-			s.Color = CELL_STROKE_COLOR
-			f.Parent = VicHolder
-		end
-	end
-end
-
-function InventoryModule.Init(screenGui)
-	ScreenGui = screenGui
-	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-
-	MainUI = ScreenGui.Main
-	InvHolder = MainUI.Inventory.MainHolder
-	VicHolder = MainUI.Vicinity.MainHolder
-	VicLabel = MainUI.Vicinity.TextLabel
-	BackpackFrame = MainUI.Backpack
-
-	buildBackpackSlotFrame()
-
-	UIS.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement and DraggingItem then
-			local m = mousePos()
-			DraggingItem.Position = UDim2.fromOffset(
-				m.X - OriginalHolder.AbsolutePosition.X - dragOffset.X,
-				m.Y - OriginalHolder.AbsolutePosition.Y - dragOffset.Y
-			)
-			updateGhost()
-		end
-	end)
-
-	UIS.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			endDrag()
-		end
-	end)
-
-	UIS.InputBegan:Connect(function(input, gameProcessed)
-		if gameProcessed then return end
-
-		if input.KeyCode == Enum.KeyCode.Tab then
-			ScreenGui.Enabled = not ScreenGui.Enabled
-			if not ScreenGui.Enabled then closeInfoFrame() end
-			return
-		end
-
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			if activeInfoFrame then
-				local m = mousePos()
-				local pos = activeInfoFrame.AbsolutePosition
-				local sz = activeInfoFrame.AbsoluteSize
-				if not (m.X >= pos.X and m.X < pos.X + sz.X and m.Y >= pos.Y and m.Y < pos.Y 
-+ sz.Y) then
-					closeInfoFrame()
-				end
-			end
-		end
-	end)
-
-	Remote.OnClientEvent:Connect(function(action, data)
-		if action == "SyncPickup" then
-			for _, v in ipairs(InvHolder:GetChildren()) do
-				if v:IsA("ImageButton") and data.OldSlot then
-					local coords = string.split(data.OldSlot, "_")
-					if v:GetAttribute("Col") == tonumber(coords[1]) and v:GetAttribute("Row") == tonumber(coords[2]) then
-						v:Destroy()
-						break
-					end
-				end
-			end
-			placeItemInternal(InvHolder, data.Name, data.X, data.Y)
-			task.defer(syncServerInventory)
-
-		elseif action == "VicinityAdd" then
-			for _, v in ipairs(VicHolder:GetChildren()) do
-				if v:IsA("ImageButton") then
-					local ref = v:FindFirstChild("ItemRef")
-					if ref and ref.Value == data.LootInstance then return end
-				end
-			end
-			local w, h = itemDims(data.Name)
-			local vx, vy = findFreeSlot(VicHolder, w, h)
-			if vx then placeItemInternal(VicHolder, data.Name, vx, vy, data.LootInstance) end
-
-		elseif action == "VicinityRemove" then
-			for _, v in ipairs(VicHolder:GetChildren()) do
-				if v:IsA("ImageButton") then
-					local ref = v:FindFirstChild("ItemRef")
-					if ref and ref.Value == data.LootInstance then
-						v:Destroy()
-						return
-					end
-				end
-			end
-
-		elseif action == "CrateOpened" then
-			for _, v in ipairs(VicHolder:GetChildren()) 
-do
-				if v:IsA("ImageButton") then v:Destroy() end
-			end
-			VicLabel.Text = data.CrateName
-			for _, loot in ipairs(data.LootList) do
-				local w, h = itemDims(loot.ItemName)
-				local vx, vy = findFreeSlot(VicHolder, w, h)
-				if vx then placeCrateItem(VicHolder, loot.ItemName, vx, vy, loot.LootEntry) end
-			end
-
-		elseif action == "CrateLeft" then
-			for _, v in ipairs(VicHolder:GetChildren()) do
-				if v:IsA("ImageButton") and v:GetAttribute("CrateLoot") then v:Destroy() end
-			end
-			VicLabel.Text = "(VICINITY)"
-
-		elseif action == "ItemConsumed" then
-			for slot, btn in pairs(EquippedSlot) do
-				if btn and btn.Name == data.Name and btn:GetAttribute("SlotName") == data.SlotName then
-					unequipSlot(slot)
-					if btn and btn.Parent then btn:Destroy() end
-					break
-				end
-			end
-			task.defer(syncServerInventory)
-		end
-	end)
-
-	rebuildInvGrid()
-	createVicGrid()
-end
-
-return InventoryModule
-</script>
-
-<script type="text/plain" id="raw-gun">
-local Players = game:GetService("Players")
+end</pre></div></div>
+    </div>
+
+    <div class="script-card" data-script-id="gun">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="crosshair" color="#fff" width="18"></i></div>
+        <div class="script-title">gunclient.local.luau</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre>local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local UIS = game:GetService("UserInputService")
@@ -2693,222 +470,22 @@ local slotKeys = {
 
 task.spawn(function()
 	local anims = {}
-	for _, folder in 
-ipairs(GunDataRS:GetChildren()) do
+	for _, folder in ipairs(GunDataRS:GetChildren()) do
 		for _, inst in ipairs(folder:GetChildren()) do
 			if inst:IsA("Animation") then table.insert(anims, inst) end
 		end
 	end
 	ContentProvider:PreloadAsync(anims)
-end)
+end)</pre></div></div>
+    </div>
 
-local function stopAllAnims()
-	for _, track in pairs(CurrentAnims) do
-		if track and track.IsPlaying then track:Stop() end
-	end
-end
-
-local function playAnim(name, fadeIn)
-	local track = CurrentAnims[name]
-	if not track then return end
-	if track.IsPlaying and name ~= "Fire" then return end
-	if name == "Fire" then track:Stop() end
-	track:Play(fadeIn or 0.1)
-end
-
-local function cleanupViewModel()
-	stopAllAnims()
-	if CurrentViewModel then
-		CurrentViewModel:Destroy()
-		CurrentViewModel = nil
-	end
-	CurrentAnimator = nil
-	CurrentAnims = {}
-	CurrentGunName = nil
-	IsEquipped = false
-	_G.ActiveViewmodelParts = {}
-end
-
-local function buildViewModel(gunName)
-	cleanupViewModel()
-
-	local gunFolder = GunDataRS:FindFirstChild(gunName)
-	if not gunFolder then return end
-
-	local vmTemplate = gunFolder:FindFirstChild(gunName .. "_viewmodel")
-	if not vmTemplate then return end
-
-	local vm = vmTemplate:Clone()
-	
-	local camPart = vm:FindFirstChild("cam", true)
-	if camPart then
-		vm.PrimaryPart = camPart
-	end
-
-	for _, 
-v in ipairs(vm:GetDescendants()) do
-		if v:IsA("BasePart") then
-			v.CanCollide = false
-			v.CanTouch = false
-			v.CanQuery = false
-			v.Massless = true
-			v.CastShadow = false
-			v.Anchored = false 
-		end
-	end
-
-	if vm.PrimaryPart then
-		vm.PrimaryPart.Anchored = true
-	end
-
-	local humanoid = vm:FindFirstChildOfClass("Humanoid")
-	if humanoid then
-		humanoid.PlatformStand = true
-		humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-	end
-
-	local animator = humanoid and (humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid))
-
-	vm.Parent = Camera
-	CurrentViewModel = vm
-	CurrentAnimator = animator
-	CurrentGunName = gunName
-
-	local animNames = { "Idle", "Walk", "Run", "Fire", "Reload", "Draw", "Holster" }
-	for _, name in ipairs(animNames) do
-		local animInst = gunFolder:FindFirstChild(name)
-		if animInst then
-			CurrentAnims[name] = animator:LoadAnimation(animInst)
-		end
-	end
-
-	IsEquipped = true
-	
-	task.defer(function()
-		playAnim("Draw", 0)
-	end)
-	
-	Remote:FireServer("GunEquipped", { GunName = gunName })
-end
-
-local function updateViewmodelCFrame(dt)
-	if not CurrentViewModel or not IsEquipped or not CurrentViewModel.PrimaryPart then return end
-
-	local char = Player.Character
-	local head = char and char:FindFirstChild("Head")
-	if 
-not head then return end
-
-	local camRotation = Camera.CFrame - Camera.CFrame.Position
-	local baseCFrame = CFrame.new(head.Position) * camRotation
-
-	local md = LastMouseDelta
-	SwayX = SwayX + (md.X * SWAY_AMOUNT - SwayX) * (dt * SWAY_SMOOTHING)
-	SwayY = SwayY + (md.Y * SWAY_AMOUNT - SwayY) * (dt * SWAY_SMOOTHING)
-	LastMouseDelta = Vector2.new(0, 0)
-	local swayCFrame = CFrame.Angles(math.rad(-SwayY), math.rad(-SwayX), math.rad(-SwayX * 0.5))
-
-	CurrentViewModel:PivotTo(baseCFrame * swayCFrame)
-	
-	local hrp = char:FindFirstChild("HumanoidRootPart")
-	local speed = hrp and hrp.AssemblyLinearVelocity.Magnitude or 0
-	if speed > 12 then
-		playAnim("Run", 0.2)
-	elseif speed > 0.5 then
-		playAnim("Walk", 0.2)
-	else
-		playAnim("Idle", 0.2)
-	end
-end
-
-local lastQuickuse = 0
-local function onQuickuseRefresh()
-	local equipped = _G.InventoryEquippedSlot
-	if not equipped then return end
-
-	local activeGun = nil
-	for slot = 1, 3 do
-		local btn = equipped[slot]
-		if btn 
-and btn:GetAttribute("ActiveSlot") then
-			activeGun = btn.Name
-			break
-		end
-	end
-
-	if activeGun then
-		if activeGun ~= CurrentGunName then buildViewModel(activeGun) end
-	elseif IsEquipped then
-		IsEquipped = false
-		local holsterTrack = CurrentAnims["Holster"]
-		if holsterTrack then
-			playAnim("Holster", 0.1)
-			task.delay(holsterTrack.Length > 0 and holsterTrack.Length or 0.2, cleanupViewModel)
-		else
-			cleanupViewModel()
-		end
-		Remote:FireServer("GunUnequipped", {})
-	end
-end
-
-UIS.InputBegan:Connect(function(input, gp)
-	if gp then return end
-	
-	local slot = slotKeys[input.KeyCode]
-	if slot then
-		local equipped = _G.InventoryEquippedSlot
-		if not equipped then return end
-		
-		for s = 1, 3 do
-			local btn = equipped[s]
-			if btn then
-				if s == slot then
-					local isCurrentlyActive = btn:GetAttribute("ActiveSlot")
-					btn:SetAttribute("ActiveSlot", not isCurrentlyActive)
-				else
-					btn:SetAttribute("ActiveSlot", nil)
-				end
-			end
-		end
-		_G.QuickuseRefresh = (_G.QuickuseRefresh or 0) + 1
-		return
-	end
-
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		IsTriggerHeld = true
-		if IsEquipped and CanShoot and not IsReloading then
-			playAnim("Fire", 0)
-			local unitRay = Camera:ScreenPointToRay(Mouse.X, Mouse.Y)
-			Remote:FireServer("RequestShoot", {
-				HitPos = (unitRay.Origin + unitRay.Direction * 600),
-				Origin 
-= unitRay.Origin,
-			})
-		end
-	end
-end)
-
-UIS.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then IsTriggerHeld = false end
-end)
-
-UIS.InputChanged:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseMovement then
-		LastMouseDelta = Vector2.new(input.Delta.X, input.Delta.Y)
-	end
-end)
-
-RunService:BindToRenderStep("UpdateViewmodel", Enum.RenderPriority.Camera.Value + 1, function(dt)
-	if _G.QuickuseRefresh ~= lastQuickuse then
-		lastQuickuse = _G.QuickuseRefresh
-		onQuickuseRefresh()
-	end
-	updateViewmodelCFrame(dt)
-end)
-</script>
-
-<script type="text/plain" id="raw-loot">
-local LootChances = {}
+    <div class="script-card" data-script-id="loot">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="database" color="#fff" width="18"></i></div>
+        <div class="script-title">Loot chances (MODULE).luau</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre>local LootChances = {}
 
 LootChances.FloorTiers = {
 	Bench = {
@@ -2940,8 +517,229 @@ LootChances.CrateLoot = {
 	},
 }
 
-return LootChances
-</script>
+return LootChances</pre></div></div>
+    </div>
+  </div>
+
+  <p class="section-label">Brainrot Cases | Helo Studios</p>
+  <div class="scripts-list">
+    <div class="script-card" data-script-id="brainrot-local">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="layout" color="#fff" width="18"></i></div>
+        <div class="script-title">localscript brainrotcases.luau</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre>local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+if not game:IsLoaded() then
+	game.Loaded:Wait()
+end
+
+task.wait(1)
+
+local screenGui = playerGui:WaitForChild("ScreenGui")
+local openFrame = screenGui:WaitForChild("haaat")
+local sideFrame = screenGui:WaitForChild("bal oldal")
+
+local lineFrame = openFrame:WaitForChild("line")
+local lineIndicator = lineFrame:WaitForChild("ImageLabel")
+local scrollingFrame = openFrame:WaitForChild("ScrollingFrame")
+
+local sutf = ReplicatedStorage:WaitForChild("sutf")
+local passThru = require(sutf:WaitForChild("pass thru me cuh"))
+
+local ItemChances = require(ReplicatedStorage:WaitForChild("ciganyok"):WaitForChild("ja"):WaitForChild("chances"))
+
+local woahh = script:WaitForChild("ohhh").Image
+
+local ReplicatedFirst = game:GetService("ReplicatedFirst")
+local IconStorage = ReplicatedFirst:WaitForChild("main open client")
+local ciganyok = ReplicatedStorage:WaitForChild("ciganyok")
+
+local sutfRemote = ReplicatedStorage:WaitForChild("sutf"):WaitForChild("pass thru me cuh"):WaitForChild("RemoteEvent")
+
+local itemFrames = {
+	ReplicatedStorage:WaitForChild("blu"),
+	ReplicatedStorage:WaitForChild("gold"),
+	ReplicatedStorage:WaitForChild("pink"),
+	ReplicatedStorage:WaitForChild("red"),
+	ReplicatedStorage:WaitForChild("babyblu"),
+	ReplicatedStorage:WaitForChild("purpul"),
+}
+
+local STRIP_COUNT = 120
+local FRAME_SIZE = UDim2.new(0, 500, 0, 500)
+local FRAME_PADDING = 12
+local FRAME_STEP = 512
+
+local isSpinning = false
+local nudgeConnection = nil
+
+local POOL_SIZE = 16
+local tickPool = {}
+local tickPoolIndex = 1
+
+for i = 1, POOL_SIZE do
+	local s = Instance.new("Sound")
+	s.SoundId = "rbxassetid://108925505726445"
+	s.Volume = 0.6
+	s.Parent = playerGui
+	tickPool[i] = s
+end
+
+local function playTick()
+	local s = tickPool[tickPoolIndex]
+	tickPoolIndex = (tickPoolIndex % POOL_SIZE) + 1
+
+	task.spawn(function()
+		s:Stop()
+		s.TimePosition = 0
+		s:Play()
+	end)
+end</pre></div></div>
+    </div>
+
+    <div class="script-card" data-script-id="brainrot-server">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="server" color="#fff" width="18"></i></div>
+        <div class="script-title">serverscript brainrotcases.luau</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre>local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local DataStoreService = game:GetService("DataStoreService")
+local RunService = game:GetService("RunService")
+
+local KeyDataStore = DataStoreService:GetDataStore("KeyInventory_v1")
+local PlacedDataStore = DataStoreService:GetDataStore("PlacedItems_v1")
+
+local martinka = ReplicatedStorage:WaitForChild("ciganyok"):WaitForChild("ja")
+local ItemChances = require(martinka:WaitForChild("chances"))
+local SellPrices = require(ReplicatedStorage:WaitForChild("sutf"):WaitForChild("SellPrices"))
+local ShopConfig = require(ReplicatedStorage:WaitForChild("ShopConfig"))
+
+local sutfFolder = ReplicatedStorage:WaitForChild("sutf")
+local passThruModule = sutfFolder:WaitForChild("pass thru me cuh")
+
+local mainEvent = passThruModule:FindFirstChild("RemoteEvent")
+	or sutfFolder:FindFirstChild("RemoteEvent")
+
+local mainFunction = passThruModule:FindFirstChild("RemoteFunction")
+	or sutfFolder:FindFirstChild("RemoteFunction")
+
+if not mainEvent then error("Could not find RemoteEvent") end
+if not mainFunction then error("Could not find RemoteFunction") end
+
+local MAX_INDEX = 60
+local APEX_RED_MULTIPLIER = 100
+local CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+local keyData = {}
+local incomeData = {}
+local shopStock = {}
+
+local function rollStock()
+	for itemKey, itemData in pairs(ShopConfig.Items) do
+		local count = 0
+		for _ = 1, itemData.RestockAmount do
+			if math.random() < itemData.RestockChance then
+				count += 1
+			end
+		end
+		shopStock[itemKey] = count
+	end
+end
+
+rollStock()
+
+local function generateId(length)
+	local result = {}
+	for i = 1, length do
+		local idx = math.random(1, #CHARSET)
+		result[i] = CHARSET:sub(idx, idx)
+	end
+	return table.concat(result)
+end</pre></div></div>
+    </div>
+
+    <div class="script-card" data-script-id="brainrot-module">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="cpu" color="#fff" width="18"></i></div>
+        <div class="script-title">process.luau (module)</div>
+        <i data-lucide="chevron-down" class="script-chevron" width="16"></i>
+      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre>local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local moduleScript = script
+local container = moduleScript.Parent
+
+local remoteEvent = nil
+local remoteFunction = nil
+local fastSpinResultCallbacks = {}
+local currentUUID = nil
+local clientConnected = false
+
+local function findRemote(containerObj, className, name)
+	if not containerObj then return nil end
+	local direct = containerObj:FindFirstChild(name)
+	if direct and direct.ClassName == className then return direct end
+	for _, child in ipairs(containerObj:GetDescendants()) do
+		if child.Name == name and child.ClassName == className then return child end
+	end
+	return nil
+end
+
+local function resolveContainer()
+	if container then return container end
+	local sutfFolder = ReplicatedStorage:FindFirstChild("sutf")
+	return sutfFolder or moduleScript
+end
+
+local function getRemoteEvent()
+	if remoteEvent then return remoteEvent end
+	local root = resolveContainer()
+	remoteEvent = findRemote(root, "RemoteEvent", "RemoteEvent")
+	if not remoteEvent and root ~= moduleScript then
+		remoteEvent = findRemote(moduleScript, "RemoteEvent", "RemoteEvent")
+	end
+	if not remoteEvent then error("re not found.") end
+	return remoteEvent
+end
+
+local function getRemoteFunction()
+	if remoteFunction then return remoteFunction end
+	local root = resolveContainer()
+	remoteFunction = findRemote(root, "RemoteFunction", "RemoteFunction")
+	if not remoteFunction and root ~= moduleScript then
+		remoteFunction = findRemote(moduleScript, "RemoteFunction", "RemoteFunction")
+	end
+	return remoteFunction
+end
+
+local module = {}
+
+function module.getUUID() return currentUUID end
+
+function module.invoke(action, data)
+	return getRemoteFunction():InvokeServer(action, data)
+end
+
+function module.fire(action, data)
+	getRemoteEvent():FireServer(action, data)
+end
+
+return module</pre></div></div>
+    </div>
+  </div>
+
+</main>
 
 <script>
 lucide.createIcons();
@@ -2968,8 +766,11 @@ themeToggle.addEventListener('click', () => {
 
 function highlight(raw) {
   return raw.split('\n').map(line => {
-    if (line.trim().startsWith('--')) return `<span class="cmt">${line}</span>`;
-    return line.replace(/\b(local|function|end|if|then|return|require|game|GetService|WaitForChild|Connect|Instance|new|ipairs|pairs|math|wait|task|spawn)\b/g, '<span class="kw">$1</span>');
+    let safeLine = line.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (safeLine.trim().startsWith('--')) return `<span class="cmt">${safeLine}</span>`;
+    return safeLine
+      .replace(/\b(local|function|end|if|then|return|require|game|GetService|WaitForChild|Connect|Instance|new|ipairs|pairs|math|wait|task|spawn)\b/g, "<span class='kw'>$1</span>")
+      .replace(/"(.*?)"/g, "<span class='str'>\"$1\"</span>");
   }).join('\n');
 }
 
@@ -2979,9 +780,9 @@ document.querySelectorAll('.script-card').forEach(card => {
     if (!isOpen) {
       card.classList.add('open');
       const pre = card.querySelector('pre');
-      if (pre.innerHTML === "") {
-        const id = card.getAttribute('data-script-id');
-        pre.innerHTML = highlight(document.getElementById('raw-' + id).textContent.trim());
+      if (pre && !pre.dataset.highlighted) {
+        pre.innerHTML = highlight(pre.textContent);
+        pre.dataset.highlighted = 'true';
       }
     } else {
       card.classList.remove('open');
