@@ -79,25 +79,21 @@
   .work-card:hover .work-hover-info { transform: translateY(0); }
   .studio-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
   .studio-role { font-family: 'JetBrains Mono', monospace; font-size: 10px; opacity: 0.55; margin-bottom: 10px; letter-spacing: 0.5px; }
-  .work-stats { display: flex; gap: 18px; }
-  .stat { display: flex; flex-direction: column; gap: 2px; }
-  .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; }
-  .stat-key { font-size: 10px; opacity: 0.55; letter-spacing: 1px; text-transform: uppercase; }
+  .work-stats { display: flex; flex-direction: column; gap: 4px; }
+  .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.9); }
   .skills-block { border: 1px solid var(--border); background: var(--card-bg); border-radius: 8px; padding: 24px 28px; margin-bottom: 64px; }
   .skills-block p { font-size: 15.5px; line-height: 1.8; color: var(--muted); }
   .skills-block p strong { color: var(--text); font-weight: 600; }
   .scripts-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
-  .script-card { border: 1px solid var(--border); background: var(--card-bg); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; position: relative; }
+  .script-card { border: 1px solid var(--border); background: var(--card-bg); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; position: relative;}
   .script-card.open { border-color: var(--muted); }
   .script-header { display: flex; align-items: center; gap: 14px; padding: 14px 18px; cursor: pointer; user-select: none; }
   .script-icon { width: 38px; height: 38px; flex-shrink: 0; border-radius: 6px; overflow: hidden; background: #1a0a2e; display: flex; align-items: center; justify-content: center; }
-  .script-icon img { width: 100%; height: 100%; object-fit: cover; }
   .script-meta { flex: 1; min-width: 0; }
   .script-title { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .script-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 2px; }
   .script-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase; flex-shrink: 0; }
   .badge-local { background: rgba(59,130,246,0.12); color: #3b82f6; }
-  .badge-server { background: rgba(239,68,68,0.12); color: #ef4444; }
   .badge-module { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
   .script-chevron { color: var(--muted); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0; }
   .script-card.open .script-chevron { transform: rotate(180deg); }
@@ -105,27 +101,24 @@
   .script-card.open .script-body { max-height: 99999px; }
   .script-code-wrap { border-top: 1px solid var(--border); background: var(--code-bg); padding: 20px 24px; overflow-x: auto; }
   pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.75; white-space: pre; color: #cdd6f4; }
-  .kw  { color: #cba6f7; }
-  .fn  { color: #89b4fa; }
+  .kw { color: #cba6f7; }
+  .fn { color: #89b4fa; }
   .str { color: #a6e3a1; }
   .num { color: #fab387; }
   .cmt { color: #6c7086; font-style: italic; }
-  .cls { color: #f38ba8; }
   
-  /* Blurred Card Styles */
-  .blurred-card .script-header { filter: blur(5px); pointer-events: none; opacity: 0.6; }
+  .blurred-card .script-header { filter: blur(4px); opacity: 0.5; pointer-events: none; }
   .blur-overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(0,0,0,0.1); backdrop-filter: blur(2px);
-    opacity: 0; transition: opacity 0.3s ease;
-    z-index: 10; cursor: help;
+    z-index: 5; opacity: 0; transition: opacity 0.3s;
   }
   .blurred-card:hover .blur-overlay { opacity: 1; }
   .blur-text {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
-    color: var(--text); background: var(--card-bg); border: 1px solid var(--border);
-    padding: 8px 16px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 6px; font-size: 12px;
+    font-family: 'JetBrains Mono', monospace; color: var(--text);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
   .footer-note { font-size: 14px; font-style: italic; color: var(--muted); margin-top: 40px; line-height: 1.7; }
@@ -147,8 +140,9 @@
 
 <main>
   <div class="intro">
-    <h1>Luau Scripter</h1>
-    <p><span>4+ years</span> of experience scripting in <span>Luau</span>, primarily for Roblox.</p>
+    <h1>Experienced roblox scripter (4+ years now)</h1>
+    <p>1 Year of HTML experience.</p>
+    <p>Icons @ lucide &lt;3</p>
   </div>
 
   <p class="section-label">My Works &amp; Current Positions</p>
@@ -160,8 +154,7 @@
           <div class="studio-name">Creation Studios</div>
           <div class="studio-role">Scripter</div>
           <div class="work-stats">
-            <div class="stat"><span class="stat-val">0</span><span class="stat-key">CCU</span></div>
-            <div class="stat"><span class="stat-val">0</span><span class="stat-key">Visits</span></div>
+            <span class="stat-val">Lead scripter | studio abandoned by owner.</span>
           </div>
         </div>
       </div>
@@ -175,194 +168,60 @@
 
   <p class="section-label">Scripts</p>
   <div class="scripts-list">
-
-    <div class="script-card" data-card="0">
+    <div class="script-card" data-script-id="client">
       <div class="script-header">
-        <div class="script-icon"><i data-lucide="file-code" color="#fff" width="20"></i></div>
+        <div class="script-icon"><i data-lucide="file-code" color="#fff" width="18"></i></div>
         <div class="script-meta">
           <div class="script-title">ClientModule.luau</div>
-          <div class="script-subtitle">Core game logic & interactions</div>
+          <div class="script-subtitle">localscript</div>
         </div>
         <span class="script-badge badge-local">Local</span>
         <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
       </div>
-      <div class="script-body">
-        <div class="script-code-wrap"><pre id="pre-0"></pre></div>
-      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
     </div>
 
-    <div class="script-card" data-card="1">
+    <div class="script-card" data-script-id="inventory">
       <div class="script-header">
-        <div class="script-icon"><i data-lucide="package" color="#fff" width="20"></i></div>
+        <div class="script-icon"><i data-lucide="box" color="#fff" width="18"></i></div>
         <div class="script-meta">
           <div class="script-title">inventory.luau</div>
-          <div class="script-subtitle">Grid-based inventory system</div>
+          <div class="script-subtitle">modulescript</div>
         </div>
         <span class="script-badge badge-module">Module</span>
         <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
       </div>
-      <div class="script-body">
-        <div class="script-code-wrap"><pre id="pre-1"></pre></div>
-      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
     </div>
 
-    <div class="script-card" data-card="2">
+    <div class="script-card" data-script-id="gun">
       <div class="script-header">
-        <div class="script-icon"><i data-lucide="target" color="#fff" width="20"></i></div>
+        <div class="script-icon"><i data-lucide="crosshair" color="#fff" width="18"></i></div>
         <div class="script-meta">
           <div class="script-title">gunclient.local.luau</div>
-          <div class="script-subtitle">Weapon handling & viewmodel sway</div>
+          <div class="script-subtitle">localscript</div>
         </div>
         <span class="script-badge badge-local">Local</span>
         <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
       </div>
-      <div class="script-body">
-        <div class="script-code-wrap"><pre id="pre-2"></pre></div>
-      </div>
-    </div>
-
-    <div class="script-card" data-card="3">
-      <div class="script-header">
-        <div class="script-icon"><i data-lucide="database" color="#fff" width="20"></i></div>
-        <div class="script-meta">
-          <div class="script-title">Loot chances (MODULE).luau</div>
-          <div class="script-subtitle">Weighted loot distribution tables</div>
-        </div>
-        <span class="script-badge badge-module">Module</span>
-        <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
-      </div>
-      <div class="script-body">
-        <div class="script-code-wrap"><pre id="pre-3"></pre></div>
-      </div>
+      <div class="script-body"><div class="script-code-wrap"><pre></pre></div></div>
     </div>
 
     <div class="script-card blurred-card">
-      <div class="blur-overlay">
-        <div class="blur-text">Waiting for a reply, cause not sure if allowed to share :\</div>
-      </div>
+      <div class="blur-overlay"><div class="blur-text">Waiting for a reply, cause not sure if allowed to share :\</div></div>
       <div class="script-header">
-        <div class="script-icon"><i data-lucide="lock" color="#fff" width="20"></i></div>
+        <div class="script-icon"><i data-lucide="lock" color="#fff" width="18"></i></div>
         <div class="script-meta">
-          <div class="script-title">Confidential Module</div>
-          <div class="script-subtitle">??????????</div>
+          <div class="script-title">Hidden Project</div>
+          <div class="script-subtitle">confidential</div>
         </div>
-        <span class="script-badge badge-server">Server</span>
         <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
       </div>
     </div>
-
   </div>
 
   <p class="footer-note">*still looking for experience with more studios, or commisions. I'm a nice guy commision me ty :3*</p>
 </main>
-
-<script>
-lucide.createIcons();
-
-const toggle = document.getElementById('theme-toggle');
-const html = document.documentElement;
-const sunIcon = document.getElementById('icon-sun');
-const moonIcon = document.getElementById('icon-moon');
-
-function setTheme(theme) {
-  html.setAttribute('data-theme', theme);
-  const isDark = theme === 'dark';
-  sunIcon.style.display = isDark ? 'none' : 'block';
-  moonIcon.style.display = isDark ? 'block' : 'none';
-}
-
-// Auto Dark Mode Detection
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  setTheme('dark');
-}
-
-toggle.addEventListener('click', () => {
-  const currentTheme = html.getAttribute('data-theme');
-  setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-});
-
-const cards = document.querySelectorAll('.script-card:not(.blurred-card)');
-cards.forEach(card => {
-  card.querySelector('.script-header').addEventListener('click', () => {
-    const isOpen = card.classList.contains('open');
-    cards.forEach(c => c.classList.remove('open'));
-    if (!isOpen) card.classList.add('open');
-  });
-});
-
-function esc(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function highlight(raw) {
-  const lines = raw.split('\n');
-  return lines.map(line => {
-    const trimmed = line.trimStart();
-    if (trimmed.startsWith('--')) {
-      return '<span class="cmt">' + esc(line) + '</span>';
-    }
-    let result = '';
-    let i = 0;
-    while (i < line.length) {
-      if (line[i] === '-' && line[i+1] === '-') {
-        result += '<span class="cmt">' + esc(line.slice(i)) + '</span>';
-        break;
-      }
-      if (line[i] === '"' || line[i] === "'") {
-        const q = line[i];
-        let j = i + 1;
-        while (j < line.length && line[j] !== q) {
-          if (line[j] === '\\') j++;
-          j++;
-        }
-        j++;
-        result += '<span class="str">' + esc(line.slice(i, j)) + '</span>';
-        i = j;
-        continue;
-      }
-      if (/[0-9]/.test(line[i]) && (i === 0 || !/\w/.test(line[i-1]))) {
-        let j = i;
-        while (j < line.length && /[0-9\.]/.test(line[j])) j++;
-        result += '<span class="num">' + esc(line.slice(i, j)) + '</span>';
-        i = j;
-        continue;
-      }
-      if (/[a-zA-Z_]/.test(line[i])) {
-        let j = i;
-        while (j < line.length && /\w/.test(line[j])) j++;
-        const word = line.slice(i, j);
-        const keywords = ['local','function','end','if','then','else','elseif','return','for','do','while','repeat','until','not','and','or','in','true','false','nil','break','continue'];
-        const builtins = ['game','workspace','math','table','string','task','print','tostring','tonumber','typeof','ipairs','pairs','pcall','require','Instance','Vector3','Color3','CFrame','UDim2','UDim','Vector2','Enum','Players','ReplicatedStorage','TweenService','RunService','UserInputService'];
-        if (keywords.includes(word)) {
-          result += '<span class="kw">' + esc(word) + '</span>';
-        } else if (builtins.includes(word)) {
-          result += '<span class="fn">' + esc(word) + '</span>';
-        } else {
-          result += esc(word);
-        }
-        i = j;
-        continue;
-      }
-      result += esc(line[i]);
-      i++;
-    }
-    return result;
-  }).join('\n');
-}
-
-// Populate Scripts
-const scriptData = [
-  document.getElementById('raw-client').textContent,
-  document.getElementById('raw-inv').textContent,
-  document.getElementById('raw-gun').textContent,
-  document.getElementById('raw-loot').textContent
-];
-
-scriptData.forEach((code, idx) => {
-  const pre = document.getElementById('pre-' + idx);
-  if(pre) pre.innerHTML = highlight(code.trim());
-});
-</script>
 
 <script type="text/plain" id="raw-client">
 local ClientModule = {}
@@ -377,269 +236,15 @@ local camera = workspace.CurrentCamera
 local MainModule = require(ReplicatedStorage:WaitForChild("Main"))
 local Remote = MainModule.GatewayEvent
 local ToolData = ReplicatedStorage:WaitForChild("tooldata")
-local InfoTemplate = ReplicatedStorage:WaitForChild("PlayerReplicate"):WaitForChild("infoo")
-local highlightTemplate = ReplicatedStorage:WaitForChild("PlayerReplicate"):WaitForChild("interacthighlight")
-local BackpackData = require(ReplicatedStorage:WaitForChild("BackpackData"))
-local Floor = workspace:WaitForChild("World"):WaitForChild("Floor")
-local Temp = workspace:WaitForChild("Temp")
-local Containers = workspace:WaitForChild("World"):WaitForChild("Containers")
-local HidingSpots = workspace:WaitForChild("World"):WaitForChild("Hidingspots")
-local ScreenGui
-local MainUI
-local InvHolder
-local VicHolder
-local VicLabel
-local BackpackFrame
-local GRID_W = 4
-local PADDING = 3
-local BASE_SLOT_LIMIT = 14
-local CELL_COLOR = Color3.fromRGB(50, 50, 55)
-local CELL_STROKE_COLOR = Color3.fromRGB(85, 85, 95)
-local GHOST_OK = Color3.fromRGB(60, 200, 100)
-local GHOST_BAD = Color3.fromRGB(200, 60, 60)
-local GHOST_TRANSPARENCY = 0.5
-local SLOT_COLORS = {
-	[1] = Color3.fromRGB(255, 210, 0),
-	[2] = Color3.fromRGB(0, 220, 100),
-	[3] = Color3.fromRGB(80, 160, 255),
-}
-local cellSize = 0
-local currentInvSlots = BASE_SLOT_LIMIT
-local equippedBackpackBtn = nil
-local equippedBackpackName = nil
-local DraggingItem = nil
-local OriginalSlotName = nil
-local OriginalHolder = nil
-local Ghost = nil
-local dragOffset = Vector2.new(0, 0)
-local EquippedSlot = { [1] = nil, [2] = nil, [3] = nil }
-_G.InventoryEquippedSlot = EquippedSlot
-local activeInfoFrame = nil
-local contextTargetButton = nil
-local PICKUP_DISTANCE = 10
-local PICKUP_FADE_TIME = 0.15
-local activeBillboard = nil
-local activeFloorItem = nil
-local activeFloorHighlight = nil
-local INTERACT_DISTANCE = 8
-local FADE_IN_TIME = 0.2
-local FADE_OUT_TIME = 0.15
-local HIGHLIGHT_FADE_TIME = 0.2
-local HOLD_DURATION = 2.5
-local REQUIRED_ITEM = "green key"
-local activeContainerHighlight = nil
-local activeContainer = nil
-local promptBillboard = nil
-local openCrateContainer = nil
-local holdActive = false
-local holdStart = 0
-local holdConnection = nil
-local unlockedCrates = {}
-local HIDING_FADE_TRANSPARENCY = 0.45
-local HIDING_FADE_IN_TIME = 0.3
-local HIDING_FADE_OUT_TIME = 0.25
-local CAMERA_MIN_DISTANCE = 0.5
-local CAMERA_PUSH_BUFFER = 0.3
-local currentHidingSpot = nil
-local originalTransparencies = {}
-local hidingActiveTweens = {}
-local occludedParts = {}
-local function mousePos()
-	return UIS:GetMouseLocation()
-end
-local function itemDims(name)
-	local entry = ToolData:FindFirstChild(name)
-	if not entry then return 1, 1 end
-	return entry:GetAttribute("Width") or 1, entry:GetAttribute("Height") or 1
-end
-local function colRowToOffset(col, row)
-	local cs = cellSize + PADDING
-	return (col - 1) * cs + PADDING, (row - 1) * cs + PADDING
-end
-local function getTotalRows()
-	return math.ceil(currentInvSlots / GRID_W)
-end
-local function isSlotIndexValid(col, row)
-	local slotIndex = (row - 1) * GRID_W + col
-	return slotIndex <= currentInvSlots
-end
-local function isAreaOccupied(holder, col, row, w, h, ignoreBtn)
-	for _, child in ipairs(holder:GetChildren()) do
-		if child:IsA("ImageButton") and child ~= ignoreBtn then
-			local cx = child:GetAttribute("Col")
-			local cy = child:GetAttribute("Row")
-			local cw, ch = itemDims(child.Name)
-			if cx and cy then
-				if col < cx + cw and col + w > cx and row < cy + ch and row + h > cy then
-					return true
-				end
-			end
-		end
-	end
-	return false
-end
-local function isAreaWithinValidSlots(col, row, w, h)
-	for r = row, row + h - 1 do
-		for c = col, col + w - 1 do
-			if not isSlotIndexValid(c, r) then
-				return false
-			end
-		end
-	end
-	return true
-end
-local function findFreeSlot(holder, w, h)
-	local rows = holder == InvHolder and getTotalRows() or 6
-	local cols = GRID_W
-	for y = 1, rows - h + 1 do
-		for x = 1, cols - w + 1 do
-			local valid = true
-			if holder == InvHolder then
-				valid = isAreaWithinValidSlots(x, y, w, h)
-			end
-			if valid and not isAreaOccupied(holder, x, y, w, h) then
-				return x, y
-			end
-		end
-	end
-	return nil, nil
-end
-local function getGhostCoord(holder, w, h)
-	if cellSize == 0 then return nil, nil end
-	local m = mousePos()
-	local pos = holder.AbsolutePosition
-	local cs = cellSize + PADDING
-	local rows = holder == InvHolder and getTotalRows() or 6
-	local col = math.floor((m.X - pos.X - PADDING) / cs - (w - 1) / 2) + 1
-	local row = math.floor((m.Y - pos.Y - PADDING) / cs - (h - 1) / 2) + 1
-	col = math.clamp(col, 1, GRID_W - w + 1)
-	row = math.clamp(row, 1, rows - h + 1)
-	return col, row
-end
-local function isCrateItem(button)
-	return button:GetAttribute("CrateLoot") == true
-end
-local function getLootEntry(button)
-	local ref = button:FindFirstChild("LootEntry")
-	return ref and ref.Value
-end
-local function applySlotStroke(button, slot)
-	local existing = button:FindFirstChild("SlotStroke")
-	if existing then existing:Destroy() end
-	if not slot then return end
-	local stroke = Instance.new("UIStroke")
-	stroke.Name = "SlotStroke"
-	stroke.Thickness = 2
-	stroke.Color = SLOT_COLORS[slot] or Color3.fromRGB(255, 255, 255)
-	stroke.Parent = button
-end
-local function notifyQuickuse()
-	_G.QuickuseRefresh = (_G.QuickuseRefresh or 0) + 1
-end
-local function equipToSlot(button, slot)
-	local old = EquippedSlot[slot]
-	if old and old ~= button then
-		applySlotStroke(old, nil)
-	end
-	for s = 1, 3 do
-		if s ~= slot and EquippedSlot[s] == button then
-			EquippedSlot[s] = nil
-			applySlotStroke(button, nil)
-		end
-	end
-	EquippedSlot[slot] = button
-	applySlotStroke(button, slot)
-	notifyQuickuse()
-end
 </script>
 
-<script type="text/plain" id="raw-inv">
+<script type="text/plain" id="raw-inventory">
 local InventoryModule = {}
 local Player = game.Players.LocalPlayer
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ToolData = ReplicatedStorage:WaitForChild("tooldata")
-local MainModule = require(ReplicatedStorage:WaitForChild("Main"))
-local Remote = MainModule.GatewayEvent
-local InfoTemplate = ReplicatedStorage:WaitForChild("PlayerReplicate"):WaitForChild("infoo")
-local BackpackData = require(game:GetService("ServerScriptService").Players:WaitForChild("BackpackData"))
-local ScreenGui
-local MainUI
-local InvHolder
-local VicHolder
-local VicLabel
-local BackpackFrame
-local DraggingItem = nil
-local OriginalSlotName = nil
-local OriginalHolder = nil
-local Ghost = nil
-local dragOffset = Vector2.new(0, 0)
-local GRID_W = 4
-local PADDING = 3
-local BASE_SLOT_LIMIT = 14
-local CELL_COLOR = Color3.fromRGB(50, 50, 55)
-local CELL_STROKE_COLOR = Color3.fromRGB(85, 85, 95)
-local GHOST_OK = Color3.fromRGB(60, 200, 100)
-local GHOST_BAD = Color3.fromRGB(200, 60, 60)
-local GHOST_TRANSPARENCY = 0.5
-local SLOT_COLORS = {
-	[1] = Color3.fromRGB(255, 210, 0),
-	[2] = Color3.fromRGB(0, 220, 100),
-	[3] = Color3.fromRGB(80, 160, 255),
-}
-local cellSize = 0
-local currentInvSlots = BASE_SLOT_LIMIT
-local equippedBackpackBtn = nil
-local equippedBackpackName = nil
-local EquippedSlot = { [1] = nil, [2] = nil, [3] = nil }
-_G.InventoryEquippedSlot = EquippedSlot
-local activeInfoFrame = nil
-local contextTargetButton = nil
-local function mousePos()
-	return UIS:GetMouseLocation()
-end
-local function itemDims(name)
-	local entry = ToolData:FindFirstChild(name)
-	if not entry then return 1, 1 end
-	return entry:GetAttribute("Width") or 1, entry:GetAttribute("Height") or 1
-end
-local function colRowToOffset(col, row)
-	local cs = cellSize + PADDING
-	return (col - 1) * cs + PADDING, (row - 1) * cs + PADDING
-end
-local function getTotalRows()
-	return math.ceil(currentInvSlots / GRID_W)
-end
-local function isSlotIndexValid(col, row)
-	local slotIndex = (row - 1) * GRID_W + col
-	return slotIndex <= currentInvSlots
-end
-local function isAreaOccupied(holder, col, row, w, h, ignoreBtn)
-	for _, child in ipairs(holder:GetChildren()) do
-		if child:IsA("ImageButton") and child ~= ignoreBtn then
-			local cx = child:GetAttribute("Col")
-			local cy = child:GetAttribute("Row")
-			local cw, ch = itemDims(child.Name)
-			if cx and cy then
-				if col < cx + cw and col + w > cx and row < cy + ch and row + h > cy then
-					return true
-				end
-			end
-		end
-	end
-	return false
-end
-local function isAreaWithinValidSlots(col, row, w, h)
-	for r = row, row + h - 1 do
-		for c = col, col + w - 1 do
-			if not isSlotIndexValid(c, r) then
-				return false
-			end
-		end
-	end
-	return true
-end
 </script>
 
 <script type="text/plain" id="raw-gun">
@@ -647,76 +252,64 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local UIS = game:GetService("UserInputService")
-local ContentProvider = game:GetService("ContentProvider")
 local Player = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
-local Mouse = Player:GetMouse()
-local MainModule = require(ReplicatedStorage:WaitForChild("Main"))
-local Remote = MainModule.GatewayEvent
-local GunDataRS = ReplicatedStorage:WaitForChild("gundata")
-local CurrentViewModel = nil
-local CurrentAnimator = nil
-local CurrentAnims = {}
-local CurrentGunName = nil
-local IsEquipped = false
-local IsReloading = false
-local CurrentAmmo = 0
-local MaxAmmo = 0
-local CanShoot = true
-local IsTriggerHeld = false
-local SwayX, SwayY = 0, 0
-local LastMouseDelta = Vector2.new(0, 0)
-local SWAY_AMOUNT = 0.08
-local SWAY_SMOOTHING = 4
-_G.ActiveViewmodelParts = {}
-local slotKeys = {
-	[Enum.KeyCode.One]   = 1,
-	[Enum.KeyCode.Two]   = 2,
-	[Enum.KeyCode.Three] = 3,
-}
-task.spawn(function()
-	local anims = {}
-	for _, folder in ipairs(GunDataRS:GetChildren()) do
-		for _, inst in ipairs(folder:GetChildren()) do
-			if inst:IsA("Animation") then table.insert(anims, inst) end
-		end
-	end
-	ContentProvider:PreloadAsync(anims)
-end)
 </script>
 
-<script type="text/plain" id="raw-loot">
-local LootChances = {}
-LootChances.FloorTiers = {
-	Bench = {
-		{ name = "green key", weight = 100 },
-	},
-	IndoorCommonHouse = {
-		{ name = "green key", weight = 60 },
-	},
-	IndoorRareHouse = {
-		{ name = "green key", weight = 30 },
-	},
-	IndoorEngineerPlace = {
-		{ name = "green key", weight = 20 },
-	},
-	IndoorATCTower = {
-		{ name = "green key", weight = 15 },
-	},
-	OutdoorCampingSite = {
-		{ name = "green key", weight = 50 },
-	},
-	OutdoorSmallHouse = {
-		{ name = "green key", weight = 45 },
-	},
-}
-LootChances.CrateLoot = {
-	woodencrate = {
-		{ name = "green key", weight = 50 },
-	},
-}
-return LootChances
-</script>
+<script>
+lucide.createIcons();
 
+const html = document.documentElement;
+const themeToggle = document.getElementById('theme-toggle');
+const sunIcon = document.getElementById('icon-sun');
+const moonIcon = document.getElementById('icon-moon');
+
+function applyTheme(theme) {
+  html.setAttribute('data-theme', theme);
+  sunIcon.style.display = theme === 'dark' ? 'none' : 'block';
+  moonIcon.style.display = theme === 'dark' ? 'block' : 'none';
+}
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  applyTheme('dark');
+}
+
+themeToggle.addEventListener('click', () => {
+  const current = html.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function highlight(raw) {
+  return raw.split('\n').map(line => {
+    if (line.trim().startsWith('--')) return `<span class="cmt">${esc(line)}</span>`;
+    let res = esc(line);
+    const keywords = ['local','function','end','if','then','else','elseif','return','for','do','while','true','false','nil'];
+    keywords.forEach(kw => {
+      const reg = new RegExp(`\\b${kw}\\b`, 'g');
+      res = res.replace(reg, `<span class="kw">${kw}</span>`);
+    });
+    return res;
+  }).join('\n');
+}
+
+document.querySelectorAll('.script-card:not(.blurred-card)').forEach(card => {
+  card.querySelector('.script-header').addEventListener('click', () => {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.script-card').forEach(c => c.classList.remove('open'));
+    
+    if (!isOpen) {
+      card.classList.add('open');
+      const pre = card.querySelector('pre');
+      if (pre && pre.innerHTML === "") {
+        const id = card.getAttribute('data-script-id');
+        const raw = document.getElementById('raw-' + id).textContent.trim();
+        pre.innerHTML = highlight(raw);
+      }
+    }
+  });
+});
+</script>
 </body>
 </html>
