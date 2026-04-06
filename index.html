@@ -87,7 +87,7 @@
   .skills-block p { font-size: 15.5px; line-height: 1.8; color: var(--muted); }
   .skills-block p strong { color: var(--text); font-weight: 600; }
   .scripts-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
-  .script-card { border: 1px solid var(--border); background: var(--card-bg); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+  .script-card { border: 1px solid var(--border); background: var(--card-bg); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; position: relative; }
   .script-card.open { border-color: var(--muted); }
   .script-header { display: flex; align-items: center; gap: 14px; padding: 14px 18px; cursor: pointer; user-select: none; }
   .script-icon { width: 38px; height: 38px; flex-shrink: 0; border-radius: 6px; overflow: hidden; background: #1a0a2e; display: flex; align-items: center; justify-content: center; }
@@ -98,6 +98,7 @@
   .script-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase; flex-shrink: 0; }
   .badge-local { background: rgba(59,130,246,0.12); color: #3b82f6; }
   .badge-server { background: rgba(239,68,68,0.12); color: #ef4444; }
+  .badge-module { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
   .script-chevron { color: var(--muted); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0; }
   .script-card.open .script-chevron { transform: rotate(180deg); }
   .script-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
@@ -110,6 +111,23 @@
   .num { color: #fab387; }
   .cmt { color: #6c7086; font-style: italic; }
   .cls { color: #f38ba8; }
+  
+  /* Blurred Card Styles */
+  .blurred-card .script-header { filter: blur(5px); pointer-events: none; opacity: 0.6; }
+  .blur-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.1); backdrop-filter: blur(2px);
+    opacity: 0; transition: opacity 0.3s ease;
+    z-index: 10; cursor: help;
+  }
+  .blurred-card:hover .blur-overlay { opacity: 1; }
+  .blur-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--text); background: var(--card-bg); border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
   .footer-note { font-size: 14px; font-style: italic; color: var(--muted); margin-top: 40px; line-height: 1.7; }
   @media (max-width: 600px) { nav { padding: 18px 20px; } main { padding: 48px 20px; } }
 </style>
@@ -160,12 +178,10 @@
 
     <div class="script-card" data-card="0">
       <div class="script-header">
-        <div class="script-icon">
-          <img src="image-removebg-preview__4_.png" alt="icon" onerror="this.parentElement.style.background='#2a1a4e'">
-        </div>
+        <div class="script-icon"><i data-lucide="file-code" color="#fff" width="20"></i></div>
         <div class="script-meta">
-          <div class="script-title">Gambling system | Client side</div>
-          <div class="script-subtitle">localscript</div>
+          <div class="script-title">ClientModule.luau</div>
+          <div class="script-subtitle">Core game logic & interactions</div>
         </div>
         <span class="script-badge badge-local">Local</span>
         <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
@@ -177,18 +193,61 @@
 
     <div class="script-card" data-card="1">
       <div class="script-header">
-        <div class="script-icon">
-          <img src="image-removebg-preview__4_.png" alt="icon" onerror="this.parentElement.style.background='#2a1a4e'">
-        </div>
+        <div class="script-icon"><i data-lucide="package" color="#fff" width="20"></i></div>
         <div class="script-meta">
-          <div class="script-title">Gambling system | Server side</div>
-          <div class="script-subtitle">serverscript</div>
+          <div class="script-title">inventory.luau</div>
+          <div class="script-subtitle">Grid-based inventory system</div>
         </div>
-        <span class="script-badge badge-server">Server</span>
+        <span class="script-badge badge-module">Module</span>
         <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
       </div>
       <div class="script-body">
         <div class="script-code-wrap"><pre id="pre-1"></pre></div>
+      </div>
+    </div>
+
+    <div class="script-card" data-card="2">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="target" color="#fff" width="20"></i></div>
+        <div class="script-meta">
+          <div class="script-title">gunclient.local.luau</div>
+          <div class="script-subtitle">Weapon handling & viewmodel sway</div>
+        </div>
+        <span class="script-badge badge-local">Local</span>
+        <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
+      </div>
+      <div class="script-body">
+        <div class="script-code-wrap"><pre id="pre-2"></pre></div>
+      </div>
+    </div>
+
+    <div class="script-card" data-card="3">
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="database" color="#fff" width="20"></i></div>
+        <div class="script-meta">
+          <div class="script-title">Loot chances (MODULE).luau</div>
+          <div class="script-subtitle">Weighted loot distribution tables</div>
+        </div>
+        <span class="script-badge badge-module">Module</span>
+        <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
+      </div>
+      <div class="script-body">
+        <div class="script-code-wrap"><pre id="pre-3"></pre></div>
+      </div>
+    </div>
+
+    <div class="script-card blurred-card">
+      <div class="blur-overlay">
+        <div class="blur-text">Waiting for a reply, cause not sure if allowed to share :\</div>
+      </div>
+      <div class="script-header">
+        <div class="script-icon"><i data-lucide="lock" color="#fff" width="20"></i></div>
+        <div class="script-meta">
+          <div class="script-title">Confidential Module</div>
+          <div class="script-subtitle">??????????</div>
+        </div>
+        <span class="script-badge badge-server">Server</span>
+        <i data-lucide="chevron-down" class="script-chevron" width="16" height="16"></i>
       </div>
     </div>
 
@@ -204,14 +263,25 @@ const toggle = document.getElementById('theme-toggle');
 const html = document.documentElement;
 const sunIcon = document.getElementById('icon-sun');
 const moonIcon = document.getElementById('icon-moon');
+
+function setTheme(theme) {
+  html.setAttribute('data-theme', theme);
+  const isDark = theme === 'dark';
+  sunIcon.style.display = isDark ? 'none' : 'block';
+  moonIcon.style.display = isDark ? 'block' : 'none';
+}
+
+// Auto Dark Mode Detection
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  setTheme('dark');
+}
+
 toggle.addEventListener('click', () => {
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  sunIcon.style.display = isDark ? 'block' : 'none';
-  moonIcon.style.display = isDark ? 'none' : 'block';
+  const currentTheme = html.getAttribute('data-theme');
+  setTheme(currentTheme === 'dark' ? 'light' : 'dark');
 });
 
-const cards = document.querySelectorAll('.script-card');
+const cards = document.querySelectorAll('.script-card:not(.blurred-card)');
 cards.forEach(card => {
   card.querySelector('.script-header').addEventListener('click', () => {
     const isOpen = card.classList.contains('open');
@@ -227,21 +297,17 @@ function esc(s) {
 function highlight(raw) {
   const lines = raw.split('\n');
   return lines.map(line => {
-    // check if whole line is a comment
     const trimmed = line.trimStart();
     if (trimmed.startsWith('--')) {
       return '<span class="cmt">' + esc(line) + '</span>';
     }
-
     let result = '';
     let i = 0;
     while (i < line.length) {
-      // inline comment
       if (line[i] === '-' && line[i+1] === '-') {
         result += '<span class="cmt">' + esc(line.slice(i)) + '</span>';
         break;
       }
-      // string
       if (line[i] === '"' || line[i] === "'") {
         const q = line[i];
         let j = i + 1;
@@ -254,7 +320,6 @@ function highlight(raw) {
         i = j;
         continue;
       }
-      // number
       if (/[0-9]/.test(line[i]) && (i === 0 || !/\w/.test(line[i-1]))) {
         let j = i;
         while (j < line.length && /[0-9\.]/.test(line[j])) j++;
@@ -262,7 +327,6 @@ function highlight(raw) {
         i = j;
         continue;
       }
-      // word
       if (/[a-zA-Z_]/.test(line[i])) {
         let j = i;
         while (j < line.length && /\w/.test(line[j])) j++;
@@ -286,560 +350,372 @@ function highlight(raw) {
   }).join('\n');
 }
 
-const codes = [
-  document.getElementById('raw-0').textContent,
-  document.getElementById('raw-1').textContent
+// Populate Scripts
+const scriptData = [
+  document.getElementById('raw-client').textContent,
+  document.getElementById('raw-inv').textContent,
+  document.getElementById('raw-gun').textContent,
+  document.getElementById('raw-loot').textContent
 ];
 
-codes.forEach((code, idx) => {
-  document.getElementById('pre-' + idx).innerHTML = highlight(code.trim());
+scriptData.forEach((code, idx) => {
+  const pre = document.getElementById('pre-' + idx);
+  if(pre) pre.innerHTML = highlight(code.trim());
 });
 </script>
 
-<script type="text/plain" id="raw-0">
+<script type="text/plain" id="raw-client">
+local ClientModule = {}
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local mouse = player:GetMouse()
 local camera = workspace.CurrentCamera
-
-if not game:IsLoaded() then
-	game.Loaded:Wait()
-end
-
-local screenGui = playerGui:WaitForChild("ScreenGui")
-local openFrame = screenGui:WaitForChild("open")
-local sideFrame = screenGui:WaitForChild("side")
-local topFrame = screenGui:WaitForChild("top")
-
-local shakeme = openFrame:WaitForChild("shakemee")
-local lineFrame = openFrame:WaitForChild("line")
-local scrollingFrame = openFrame:WaitForChild("ScrollingFrame")
-local openCaseButton = topFrame:WaitForChild("opencase")
-
-local ViewportConfigs = require(ReplicatedStorage:WaitForChild("ciganyok"):WaitForChild("ja"):WaitForChild("offsets"))
-local ItemChances = require(ReplicatedStorage:WaitForChild("ModuleScript"))
-local rollRemote = ReplicatedStorage:WaitForChild("RollCase")
-local indexRemote = ReplicatedStorage:WaitForChild("UpdateIndex")
-local ciganyok = ReplicatedStorage:WaitForChild("ciganyok")
-
-local itemStorage = ReplicatedStorage
-local itemFrames = {
-	itemStorage:WaitForChild("blu"),
-	itemStorage:WaitForChild("gold"),
-	itemStorage:WaitForChild("purpul"),
-	itemStorage:WaitForChild("red"),
+local MainModule = require(ReplicatedStorage:WaitForChild("Main"))
+local Remote = MainModule.GatewayEvent
+local ToolData = ReplicatedStorage:WaitForChild("tooldata")
+local InfoTemplate = ReplicatedStorage:WaitForChild("PlayerReplicate"):WaitForChild("infoo")
+local highlightTemplate = ReplicatedStorage:WaitForChild("PlayerReplicate"):WaitForChild("interacthighlight")
+local BackpackData = require(ReplicatedStorage:WaitForChild("BackpackData"))
+local Floor = workspace:WaitForChild("World"):WaitForChild("Floor")
+local Temp = workspace:WaitForChild("Temp")
+local Containers = workspace:WaitForChild("World"):WaitForChild("Containers")
+local HidingSpots = workspace:WaitForChild("World"):WaitForChild("Hidingspots")
+local ScreenGui
+local MainUI
+local InvHolder
+local VicHolder
+local VicLabel
+local BackpackFrame
+local GRID_W = 4
+local PADDING = 3
+local BASE_SLOT_LIMIT = 14
+local CELL_COLOR = Color3.fromRGB(50, 50, 55)
+local CELL_STROKE_COLOR = Color3.fromRGB(85, 85, 95)
+local GHOST_OK = Color3.fromRGB(60, 200, 100)
+local GHOST_BAD = Color3.fromRGB(200, 60, 60)
+local GHOST_TRANSPARENCY = 0.5
+local SLOT_COLORS = {
+	[1] = Color3.fromRGB(255, 210, 0),
+	[2] = Color3.fromRGB(0, 220, 100),
+	[3] = Color3.fromRGB(80, 160, 255),
 }
-
-local STRIP_COUNT = 120
-local FRAME_SIZE = UDim2.new(0, 500, 0, 500)
-local FRAME_PADDING = 12
-local FRAME_STEP = 512
-
-local isSpinning = false
-
-local POOL_SIZE = 16
-local tickPool = {}
-local tickPoolIndex = 1
-
-for i = 1, POOL_SIZE do
-	local s = Instance.new("Sound")
-	s.SoundId = "rbxassetid://108925505726445"
-	s.Volume = 0.6
-	s.Parent = playerGui
-	tickPool[i] = s
+local cellSize = 0
+local currentInvSlots = BASE_SLOT_LIMIT
+local equippedBackpackBtn = nil
+local equippedBackpackName = nil
+local DraggingItem = nil
+local OriginalSlotName = nil
+local OriginalHolder = nil
+local Ghost = nil
+local dragOffset = Vector2.new(0, 0)
+local EquippedSlot = { [1] = nil, [2] = nil, [3] = nil }
+_G.InventoryEquippedSlot = EquippedSlot
+local activeInfoFrame = nil
+local contextTargetButton = nil
+local PICKUP_DISTANCE = 10
+local PICKUP_FADE_TIME = 0.15
+local activeBillboard = nil
+local activeFloorItem = nil
+local activeFloorHighlight = nil
+local INTERACT_DISTANCE = 8
+local FADE_IN_TIME = 0.2
+local FADE_OUT_TIME = 0.15
+local HIGHLIGHT_FADE_TIME = 0.2
+local HOLD_DURATION = 2.5
+local REQUIRED_ITEM = "green key"
+local activeContainerHighlight = nil
+local activeContainer = nil
+local promptBillboard = nil
+local openCrateContainer = nil
+local holdActive = false
+local holdStart = 0
+local holdConnection = nil
+local unlockedCrates = {}
+local HIDING_FADE_TRANSPARENCY = 0.45
+local HIDING_FADE_IN_TIME = 0.3
+local HIDING_FADE_OUT_TIME = 0.25
+local CAMERA_MIN_DISTANCE = 0.5
+local CAMERA_PUSH_BUFFER = 0.3
+local currentHidingSpot = nil
+local originalTransparencies = {}
+local hidingActiveTweens = {}
+local occludedParts = {}
+local function mousePos()
+	return UIS:GetMouseLocation()
 end
-
-local function playTick()
-	local s = tickPool[tickPoolIndex]
-	tickPoolIndex = (tickPoolIndex % POOL_SIZE) + 1
-	task.spawn(function()
-		s:Stop()
-		s.TimePosition = 0
-		s:Play()
-	end)
+local function itemDims(name)
+	local entry = ToolData:FindFirstChild(name)
+	if not entry then return 1, 1 end
+	return entry:GetAttribute("Width") or 1, entry:GetAttribute("Height") or 1
 end
-
-local function playOpenSound()
-	local sound = Instance.new("Sound")
-	sound.SoundId = "rbxassetid://139659161934788"
-	sound.Volume = 1
-	sound.Parent = playerGui
-	sound:Play()
-	game:GetService("Debris"):AddItem(sound, 10)
+local function colRowToOffset(col, row)
+	local cs = cellSize + PADDING
+	return (col - 1) * cs + PADDING, (row - 1) * cs + PADDING
 end
-
-local function buildWeightedPool(items, count)
-	local totalWeight = 0
-	for _, item in ipairs(items) do
-		totalWeight += item.weight
-	end
-	local pool = {}
-	for _, item in ipairs(items) do
-		local slots = math.floor((item.weight / totalWeight) * count)
-		for _ = 1, slots do
-			table.insert(pool, item)
-		end
-	end
-	while #pool < count do
-		local item = items[math.random(1, #items)]
-		table.insert(pool, item)
-	end
-	for i = #pool, 2, -1 do
-		local j = math.random(1, i)
-		pool[i], pool[j] = pool[j], pool[i]
-	end
-	return pool
+local function getTotalRows()
+	return math.ceil(currentInvSlots / GRID_W)
 end
-
-local function getFrameByName(name)
-	for _, frame in ipairs(itemFrames) do
-		if frame.Name == name then
-			return frame
-		end
-	end
-	return itemFrames[1]
+local function isSlotIndexValid(col, row)
+	local slotIndex = (row - 1) * GRID_W + col
+	return slotIndex <= currentInvSlots
 end
-
-local function attachViewport(parentFrame, modelName)
-	local config = ViewportConfigs[modelName]
-	local modelSource = ciganyok:FindFirstChild(modelName)
-	if not modelSource or not config then return end
-
-	local vp = Instance.new("ViewportFrame")
-	vp.Size = UDim2.new(1, 0, 1, 0)
-	vp.Position = UDim2.new(0, 0, 0, 0)
-	vp.BackgroundTransparency = 1
-	vp.ImageTransparency = 0
-	vp.LightColor = Color3.fromRGB(255, 255, 255)
-	vp.Ambient = Color3.fromRGB(210, 210, 210)
-	vp.LightDirection = Vector3.new(-1, -1, -1)
-	vp.Parent = parentFrame
-
-	local modelClone = modelSource:Clone()
-	modelClone.Parent = vp
-
-	local vpCamera = Instance.new("Camera")
-	vpCamera.FieldOfView = 50
-	vpCamera.Parent = vp
-	vp.CurrentCamera = vpCamera
-
-	local ori = config.cameraOri
-	vpCamera.CFrame = CFrame.new(config.cameraPos) * CFrame.fromEulerAnglesYXZ(math.rad(ori.X), math.rad(ori.Y), math.rad(ori.Z))
-end
-
-local function clearScrollingFrame()
-	for _, child in ipairs(scrollingFrame:GetChildren()) do
-		if child:IsA("Frame") or child:IsA("ImageLabel") or child:IsA("ImageButton") then
-			child:Destroy()
-		end
-	end
-end
-
-local function populateStrip(pool)
-	clearScrollingFrame()
-	for i, item in ipairs(pool) do
-		local sourceFrame = getFrameByName(item.name)
-		local clone = sourceFrame:Clone()
-		clone.Size = FRAME_SIZE
-		clone.Position = UDim2.new(0, (i - 1) * FRAME_STEP + FRAME_PADDING, 0.5, 0)
-		clone.AnchorPoint = Vector2.new(0, 0.5)
-		clone.Parent = scrollingFrame
-
-		local chosenModel = item.models[math.random(1, #item.models)]
-		attachViewport(clone, chosenModel)
-	end
-	scrollingFrame.CanvasSize = UDim2.new(0, STRIP_COUNT * FRAME_STEP + FRAME_PADDING * 2, 0, 0)
-end
-
-local function suspenseShake(frame, duration)
-	local originalPos = frame.Position
-	local originalRot = frame.Rotation
-	local elapsed = 0
-
-	local shakeConn
-	shakeConn = RunService.Heartbeat:Connect(function(dt)
-		elapsed += dt
-		local progress = elapsed / duration
-		local intensity = 2 + progress * 10
-		local rotIntensity = 1.5 + progress * 6
-
-		frame.Position = UDim2.new(
-			originalPos.X.Scale,
-			originalPos.X.Offset + (math.random() * 2 - 1) * intensity,
-			originalPos.Y.Scale,
-			originalPos.Y.Offset + (math.random() * 2 - 1) * intensity
-		)
-		frame.Rotation = (math.random() * 2 - 1) * rotIntensity
-
-		if elapsed >= duration then
-			shakeConn:Disconnect()
-			frame.Position = originalPos
-			frame.Rotation = originalRot
-		end
-	end)
-end
-
-local function doExplodeSmall(frame, originalSize)
-	local explodeOut = TweenService:Create(frame, TweenInfo.new(0.08, Enum.EasingStyle.Linear), {
-		Size = UDim2.new(
-			originalSize.X.Scale * 1.15,
-			originalSize.X.Offset * 1.15,
-			originalSize.Y.Scale * 1.15,
-			originalSize.Y.Offset * 1.15
-		),
-	})
-	explodeOut:Play()
-	explodeOut.Completed:Wait()
-
-	local shrinkAway = TweenService:Create(frame, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-		Size = UDim2.new(0, 0, 0, 0),
-	})
-	shrinkAway:Play()
-	shrinkAway.Completed:Wait()
-
-	frame.Size = originalSize
-end
-
-local function getModelPivot(model)
-	if model:IsA("Model") then
-		local ok, cf = pcall(function() return model:GetPivot() end)
-		if ok then return cf end
-	end
-	for _, part in ipairs(model:GetDescendants()) do
-		if part:IsA("BasePart") then
-			return part.CFrame
-		end
-	end
-	return CFrame.new()
-end
-
-local function showItemViewer(modelName, config, itemId, itemPattern)
-	local modelSource = ciganyok:FindFirstChild(modelName)
-	if not modelSource or not config then return end
-
-	local viewerGui = Instance.new("ScreenGui")
-	viewerGui.Name = "ItemViewer"
-	viewerGui.ResetOnSpawn = false
-	viewerGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	viewerGui.Parent = playerGui
-
-	local backdrop = Instance.new("Frame")
-	backdrop.Size = UDim2.new(1, 0, 1, 0)
-	backdrop.Position = UDim2.new(0, 0, 0, 0)
-	backdrop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	backdrop.BackgroundTransparency = 0.45
-	backdrop.BorderSizePixel = 0
-	backdrop.Parent = viewerGui
-
-	local vp = Instance.new("ViewportFrame")
-	vp.Size = UDim2.new(0.72, 0, 0.82, 0)
-	vp.Position = UDim2.new(0.5, 0, 0.48, 0)
-	vp.AnchorPoint = Vector2.new(0.5, 0.5)
-	vp.BackgroundTransparency = 1
-	vp.ImageTransparency = 0
-	vp.LightColor = Color3.fromRGB(255, 255, 255)
-	vp.Ambient = Color3.fromRGB(210, 210, 210)
-	vp.LightDirection = Vector3.new(-1, -1, -1)
-	vp.Parent = viewerGui
-
-	local modelClone = modelSource:Clone()
-	modelClone.Parent = vp
-
-	local pivotCFrame = getModelPivot(modelClone)
-	local pivotPos = pivotCFrame.Position
-
-	local vpCamera = Instance.new("Camera")
-	vpCamera.FieldOfView = 50
-	vpCamera.Parent = vp
-	vp.CurrentCamera = vpCamera
-
-	local ori = config.cameraOri
-	local baseCameraPos = config.cameraPos
-
-	local rotX = 0
-	local rotY = 0
-	local zoomOffset = 0
-	local isDragging = false
-	local lastMousePos = nil
-	local velocityX = 0
-	local velocityY = 0
-
-	local MIN_ZOOM = -6
-	local MAX_ZOOM = 3
-	local ROT_SPEED = 0.12
-	local FRICTION = 0.88
-	local ZOOM_SPEED = 0.8
-
-	local function updateCamera()
-		local orbitRadius = (baseCameraPos - pivotPos).Magnitude
-		orbitRadius = math.clamp(orbitRadius + zoomOffset, 0.5, 9999)
-
-		local orbitCFrame = CFrame.new(pivotPos)
-			* CFrame.fromEulerAnglesYXZ(math.rad(rotX), math.rad(rotY), 0)
-			* CFrame.new(0, 0, orbitRadius)
-
-		vpCamera.CFrame = CFrame.new(orbitCFrame.Position, pivotPos)
-	end
-
-	updateCamera()
-
-	local inertiaConn
-	inertiaConn = RunService.Heartbeat:Connect(function()
-		if not isDragging then
-			velocityX = velocityX * FRICTION
-			velocityY = velocityY * FRICTION
-			if math.abs(velocityX) > 0.001 or math.abs(velocityY) > 0.001 then
-				rotY = rotY + velocityX
-				rotX = rotX + velocityY
-				rotX = math.clamp(rotX, -80, 80)
-				updateCamera()
+local function isAreaOccupied(holder, col, row, w, h, ignoreBtn)
+	for _, child in ipairs(holder:GetChildren()) do
+		if child:IsA("ImageButton") and child ~= ignoreBtn then
+			local cx = child:GetAttribute("Col")
+			local cy = child:GetAttribute("Row")
+			local cw, ch = itemDims(child.Name)
+			if cx and cy then
+				if col < cx + cw and col + w > cx and row < cy + ch and row + h > cy then
+					return true
+				end
 			end
 		end
-	end)
-
-	vp.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			isDragging = true
-			velocityX = 0
-			velocityY = 0
-			lastMousePos = input.Position
-		end
-	end)
-
-	vp.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			isDragging = false
-			lastMousePos = nil
-		end
-	end)
-
-	vp.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement and isDragging and lastMousePos then
-			local delta = input.Position - lastMousePos
-			lastMousePos = input.Position
-			velocityX = delta.X * ROT_SPEED
-			velocityY = -(delta.Y * ROT_SPEED)
-			rotY = rotY + velocityX
-			rotX = rotX + velocityY
-			rotX = math.clamp(rotX, -80, 80)
-			updateCamera()
-		elseif input.UserInputType == Enum.UserInputType.MouseWheel then
-			zoomOffset = math.clamp(zoomOffset - input.Position.Z * ZOOM_SPEED, MIN_ZOOM, MAX_ZOOM)
-			updateCamera()
-		end
-	end)
-
-	local closeBtn = Instance.new("TextButton")
-	closeBtn.Size = UDim2.new(0, 160, 0, 46)
-	closeBtn.Position = UDim2.new(0.5, 0, 0.93, 0)
-	closeBtn.AnchorPoint = Vector2.new(0.5, 0)
-	closeBtn.BackgroundColor3 = Color3.fromRGB(190, 35, 35)
-	closeBtn.BorderSizePixel = 0
-	closeBtn.Text = "Close"
-	closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	closeBtn.TextSize = 20
-	closeBtn.Font = Enum.Font.GothamBold
-	closeBtn.Parent = viewerGui
-
-	local cornerClose = Instance.new("UICorner")
-	cornerClose.CornerRadius = UDim.new(0, 10)
-	cornerClose.Parent = closeBtn
-
-	closeBtn.MouseButton1Click:Connect(function()
-		if inertiaConn then inertiaConn:Disconnect() end
-		camera.CameraType = Enum.CameraType.Custom
-		viewerGui:Destroy()
-	end)
+	end
+	return false
 end
-
-local function openCase()
-	if isSpinning then return end
-	isSpinning = true
-
-	sideFrame.Visible = false
-	topFrame.Visible = false
-	openFrame.Visible = true
-
-	for _, child in ipairs(openFrame:GetChildren()) do
-		if child ~= shakeme then
-			child.Visible = false
+local function isAreaWithinValidSlots(col, row, w, h)
+	for r = row, row + h - 1 do
+		for c = col, col + w - 1 do
+			if not isSlotIndexValid(c, r) then
+				return false
+			end
 		end
 	end
-
-	shakeme.Visible = true
-	shakeme.Rotation = 0
-	local originalSize = shakeme.Size
-
-	playOpenSound()
-	suspenseShake(shakeme, 2.2)
-	task.wait(2.2)
-
-	doExplodeSmall(shakeme, originalSize)
-
-	shakeme.Visible = false
-	lineFrame.Visible = true
-	scrollingFrame.Visible = true
-
-	local wonItemName, wonModelName, itemId, itemPattern = rollRemote:InvokeServer()
-
-	local pool = buildWeightedPool(ItemChances, STRIP_COUNT)
-	local winnerIndex = math.floor(STRIP_COUNT * 0.75) + math.random(-3, 3)
-	pool[winnerIndex] = {name = wonItemName, models = {wonModelName}}
-
-	populateStrip(pool)
-
-	RunService.PreRender:Wait()
-
-	local frameCenterX = (winnerIndex - 1) * FRAME_STEP + FRAME_PADDING + (FRAME_SIZE.X.Offset / 2)
-	local finalCanvas = frameCenterX - (scrollingFrame.AbsoluteSize.X / 2)
-	finalCanvas = math.max(0, finalCanvas)
-
-	scrollingFrame.CanvasPosition = Vector2.new(0, 0)
-
-	local startPos = 0
-	local endPos = finalCanvas
-	local duration = 8.5
-	local elapsed = 0
-	local lastCanvasPos = 0
-	local timeSinceLastTick = 0
-
-	local function easeOutExpo(t)
-		if t >= 1 then return 1 end
-		return 1 - math.pow(2, -10 * t)
-	end
-
-	local spinConnection
-	spinConnection = RunService.Heartbeat:Connect(function(dt)
-		elapsed = math.min(elapsed + dt, duration)
-		local t = elapsed / duration
-		local eased = easeOutExpo(t)
-		local currentPos = startPos + (endPos - startPos) * eased
-		scrollingFrame.CanvasPosition = Vector2.new(currentPos, 0)
-
-		local pixelsPerSecond = math.abs(currentPos - lastCanvasPos) / dt
-		lastCanvasPos = currentPos
-
-		local minTickInterval = FRAME_STEP / math.max(pixelsPerSecond, 1)
-		minTickInterval = math.clamp(minTickInterval, 0.04, 2)
-
-		timeSinceLastTick += dt
-		if timeSinceLastTick >= minTickInterval then
-			timeSinceLastTick = 0
-			playTick()
-		end
-
-		if elapsed >= duration then
-			spinConnection:Disconnect()
-			indexRemote:FireServer(wonModelName, itemId, itemPattern)
-			task.wait(1.5)
-			openFrame.Visible = false
-			sideFrame.Visible = true
-			topFrame.Visible = true
-			isSpinning = false
-
-			local config = ViewportConfigs[wonModelName]
-			showItemViewer(wonModelName, config, itemId, itemPattern)
-		end
-	end)
+	return true
 end
-
-openCaseButton.MouseButton1Click:Connect(openCase)
+local function findFreeSlot(holder, w, h)
+	local rows = holder == InvHolder and getTotalRows() or 6
+	local cols = GRID_W
+	for y = 1, rows - h + 1 do
+		for x = 1, cols - w + 1 do
+			local valid = true
+			if holder == InvHolder then
+				valid = isAreaWithinValidSlots(x, y, w, h)
+			end
+			if valid and not isAreaOccupied(holder, x, y, w, h) then
+				return x, y
+			end
+		end
+	end
+	return nil, nil
+end
+local function getGhostCoord(holder, w, h)
+	if cellSize == 0 then return nil, nil end
+	local m = mousePos()
+	local pos = holder.AbsolutePosition
+	local cs = cellSize + PADDING
+	local rows = holder == InvHolder and getTotalRows() or 6
+	local col = math.floor((m.X - pos.X - PADDING) / cs - (w - 1) / 2) + 1
+	local row = math.floor((m.Y - pos.Y - PADDING) / cs - (h - 1) / 2) + 1
+	col = math.clamp(col, 1, GRID_W - w + 1)
+	row = math.clamp(row, 1, rows - h + 1)
+	return col, row
+end
+local function isCrateItem(button)
+	return button:GetAttribute("CrateLoot") == true
+end
+local function getLootEntry(button)
+	local ref = button:FindFirstChild("LootEntry")
+	return ref and ref.Value
+end
+local function applySlotStroke(button, slot)
+	local existing = button:FindFirstChild("SlotStroke")
+	if existing then existing:Destroy() end
+	if not slot then return end
+	local stroke = Instance.new("UIStroke")
+	stroke.Name = "SlotStroke"
+	stroke.Thickness = 2
+	stroke.Color = SLOT_COLORS[slot] or Color3.fromRGB(255, 255, 255)
+	stroke.Parent = button
+end
+local function notifyQuickuse()
+	_G.QuickuseRefresh = (_G.QuickuseRefresh or 0) + 1
+end
+local function equipToSlot(button, slot)
+	local old = EquippedSlot[slot]
+	if old and old ~= button then
+		applySlotStroke(old, nil)
+	end
+	for s = 1, 3 do
+		if s ~= slot and EquippedSlot[s] == button then
+			EquippedSlot[s] = nil
+			applySlotStroke(button, nil)
+		end
+	end
+	EquippedSlot[slot] = button
+	applySlotStroke(button, slot)
+	notifyQuickuse()
+end
 </script>
 
-<script type="text/plain" id="raw-1">
+<script type="text/plain" id="raw-inv">
+local InventoryModule = {}
+local Player = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ToolData = ReplicatedStorage:WaitForChild("tooldata")
+local MainModule = require(ReplicatedStorage:WaitForChild("Main"))
+local Remote = MainModule.GatewayEvent
+local InfoTemplate = ReplicatedStorage:WaitForChild("PlayerReplicate"):WaitForChild("infoo")
+local BackpackData = require(game:GetService("ServerScriptService").Players:WaitForChild("BackpackData"))
+local ScreenGui
+local MainUI
+local InvHolder
+local VicHolder
+local VicLabel
+local BackpackFrame
+local DraggingItem = nil
+local OriginalSlotName = nil
+local OriginalHolder = nil
+local Ghost = nil
+local dragOffset = Vector2.new(0, 0)
+local GRID_W = 4
+local PADDING = 3
+local BASE_SLOT_LIMIT = 14
+local CELL_COLOR = Color3.fromRGB(50, 50, 55)
+local CELL_STROKE_COLOR = Color3.fromRGB(85, 85, 95)
+local GHOST_OK = Color3.fromRGB(60, 200, 100)
+local GHOST_BAD = Color3.fromRGB(200, 60, 60)
+local GHOST_TRANSPARENCY = 0.5
+local SLOT_COLORS = {
+	[1] = Color3.fromRGB(255, 210, 0),
+	[2] = Color3.fromRGB(0, 220, 100),
+	[3] = Color3.fromRGB(80, 160, 255),
+}
+local cellSize = 0
+local currentInvSlots = BASE_SLOT_LIMIT
+local equippedBackpackBtn = nil
+local equippedBackpackName = nil
+local EquippedSlot = { [1] = nil, [2] = nil, [3] = nil }
+_G.InventoryEquippedSlot = EquippedSlot
+local activeInfoFrame = nil
+local contextTargetButton = nil
+local function mousePos()
+	return UIS:GetMouseLocation()
+end
+local function itemDims(name)
+	local entry = ToolData:FindFirstChild(name)
+	if not entry then return 1, 1 end
+	return entry:GetAttribute("Width") or 1, entry:GetAttribute("Height") or 1
+end
+local function colRowToOffset(col, row)
+	local cs = cellSize + PADDING
+	return (col - 1) * cs + PADDING, (row - 1) * cs + PADDING
+end
+local function getTotalRows()
+	return math.ceil(currentInvSlots / GRID_W)
+end
+local function isSlotIndexValid(col, row)
+	local slotIndex = (row - 1) * GRID_W + col
+	return slotIndex <= currentInvSlots
+end
+local function isAreaOccupied(holder, col, row, w, h, ignoreBtn)
+	for _, child in ipairs(holder:GetChildren()) do
+		if child:IsA("ImageButton") and child ~= ignoreBtn then
+			local cx = child:GetAttribute("Col")
+			local cy = child:GetAttribute("Row")
+			local cw, ch = itemDims(child.Name)
+			if cx and cy then
+				if col < cx + cw and col + w > cx and row < cy + ch and row + h > cy then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+local function isAreaWithinValidSlots(col, row, w, h)
+	for r = row, row + h - 1 do
+		for c = col, col + w - 1 do
+			if not isSlotIndexValid(c, r) then
+				return false
+			end
+		end
+	end
+	return true
+end
+</script>
+
+<script type="text/plain" id="raw-gun">
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ItemChances = require(ReplicatedStorage:WaitForChild("ModuleScript"))
-
-local rollRemote = Instance.new("RemoteFunction")
-rollRemote.Name = "RollCase"
-rollRemote.Parent = ReplicatedStorage
-
-local indexRemote = Instance.new("RemoteEvent")
-indexRemote.Name = "UpdateIndex"
-indexRemote.Parent = ReplicatedStorage
-
-local MAX_INDEX = 60
-local CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-
-local function generateId(length)
-	local result = {}
-	for i = 1, length do
-		local idx = math.random(1, #CHARSET)
-		result[i] = CHARSET:sub(idx, idx)
-	end
-	return table.concat(result)
-end
-
-local function generatePattern()
-	local base = math.random(1, 9999)
-	local decimal = math.random(1000, 9999999)
-	return tostring(base) .. "." .. tostring(decimal)
-end
-
-local function weightedRandom(items)
-	local totalWeight = 0
-	for _, item in ipairs(items) do
-		totalWeight += item.weight
-	end
-	local roll = math.random(1, totalWeight)
-	local cumulative = 0
-	for _, item in ipairs(items) do
-		cumulative += item.weight
-		if roll <= cumulative then
-			return item
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local ContentProvider = game:GetService("ContentProvider")
+local Player = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+local Mouse = Player:GetMouse()
+local MainModule = require(ReplicatedStorage:WaitForChild("Main"))
+local Remote = MainModule.GatewayEvent
+local GunDataRS = ReplicatedStorage:WaitForChild("gundata")
+local CurrentViewModel = nil
+local CurrentAnimator = nil
+local CurrentAnims = {}
+local CurrentGunName = nil
+local IsEquipped = false
+local IsReloading = false
+local CurrentAmmo = 0
+local MaxAmmo = 0
+local CanShoot = true
+local IsTriggerHeld = false
+local SwayX, SwayY = 0, 0
+local LastMouseDelta = Vector2.new(0, 0)
+local SWAY_AMOUNT = 0.08
+local SWAY_SMOOTHING = 4
+_G.ActiveViewmodelParts = {}
+local slotKeys = {
+	[Enum.KeyCode.One]   = 1,
+	[Enum.KeyCode.Two]   = 2,
+	[Enum.KeyCode.Three] = 3,
+}
+task.spawn(function()
+	local anims = {}
+	for _, folder in ipairs(GunDataRS:GetChildren()) do
+		for _, inst in ipairs(folder:GetChildren()) do
+			if inst:IsA("Animation") then table.insert(anims, inst) end
 		end
 	end
-	return items[#items]
-end
-
-rollRemote.OnServerInvoke = function(player)
-	local wonItem = weightedRandom(ItemChances)
-	local chosenModel = wonItem.models[math.random(1, #wonItem.models)]
-	local itemId = generateId(16)
-	local itemPattern = generatePattern()
-	return wonItem.name, chosenModel, itemId, itemPattern
-end
-
-indexRemote.OnServerEvent:Connect(function(player, modelName, itemId, itemPattern)
-	if typeof(modelName) ~= "string" then return end
-	if typeof(itemId) ~= "string" then return end
-	if typeof(itemPattern) ~= "string" then return end
-
-	local indexValue = player:FindFirstChild("INDEX")
-	if not indexValue then
-		indexValue = Instance.new("StringValue")
-		indexValue.Name = "INDEX"
-		indexValue.Value = ""
-		indexValue.Parent = player
-	end
-
-	local current = indexValue.Value
-	local entries = {}
-	if current ~= "" then
-		for entry in current:gmatch('"([^"]+)"') do
-			table.insert(entries, entry)
-		end
-	end
-
-	if #entries >= MAX_INDEX then
-		table.remove(entries, 1)
-	end
-
-	local record = modelName .. "|" .. itemId .. "|" .. itemPattern
-	table.insert(entries, record)
-
-	local parts = {}
-	for _, entry in ipairs(entries) do
-		table.insert(parts, '"' .. entry .. '"')
-	end
-	indexValue.Value = table.concat(parts, ",")
+	ContentProvider:PreloadAsync(anims)
 end)
+</script>
+
+<script type="text/plain" id="raw-loot">
+local LootChances = {}
+LootChances.FloorTiers = {
+	Bench = {
+		{ name = "green key", weight = 100 },
+	},
+	IndoorCommonHouse = {
+		{ name = "green key", weight = 60 },
+	},
+	IndoorRareHouse = {
+		{ name = "green key", weight = 30 },
+	},
+	IndoorEngineerPlace = {
+		{ name = "green key", weight = 20 },
+	},
+	IndoorATCTower = {
+		{ name = "green key", weight = 15 },
+	},
+	OutdoorCampingSite = {
+		{ name = "green key", weight = 50 },
+	},
+	OutdoorSmallHouse = {
+		{ name = "green key", weight = 45 },
+	},
+}
+LootChances.CrateLoot = {
+	woodencrate = {
+		{ name = "green key", weight = 50 },
+	},
+}
+return LootChances
 </script>
 
 </body>
